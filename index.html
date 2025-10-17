@@ -2,14 +2,107 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>发送邮件给我</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>验证正品界面</title>
+    <style>
+        /* 你原有的所有样式（保持不变） */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { overflow: hidden; background: url("你的背景图路径") no-repeat center center; background-size: cover; }
+        .petal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .petal { position: absolute; width: 20px; height: 25px; background-color: rgba(255, 182, 193, 0.8); border-radius: 50% 0 50% 50%; animation: fall 10s linear infinite; transform-origin: center; }
+        @keyframes fall { 0% { top: -20px; transform: translateX(0) rotate(0deg) scale(0.5); opacity: 0; } 10% { opacity: 1; } 100% { top: 100%; transform: translateX(100px) rotate(360deg) scale(1); opacity: 0.5; } }
+        .content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: #fff; text-align: center; }
+        .avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 20px; }
+        .title { font-size: 24px; margin-bottom: 10px; }
+        .tg { font-size: 18px; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; }
+        .desc { font-size: 16px; color: rgba(255, 255, 255, 0.8); margin-bottom: 10px; }
+        .qgroup { font-size: 18px; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; }
+        .icon { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 20px; }
+        .top-bar { position: fixed; top: 0; left: 0; width: 100%; padding: 10px; background-color: rgba(0, 0, 0, 0.5); color: #fff; display: flex; align-items: center; }
+        .top-bar img { width: 20px; height: 20px; margin-right: 5px; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; text-align: center; font-size: 12px; }
+        .music-link { display: inline-block; padding: 8px 16px; background-color: rgba(255, 182, 193, 0.8); color: #fff; text-decoration: none; border-radius: 20px; font-size: 16px; margin-top: 10px; }
+        
+        /* 点击特效的样式（新增） */
+        .click-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+            animation: clickFadeOut 1s linear forwards;
+        }
+        @keyframes clickFadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+    </style>
 </head>
 <body>
-    <!-- 1. 基础版：仅预填收件人 -->
-    <p>简单联系我：<a href="mailto:740912168@qq.com">点击发送邮件</a></p>
+    <div class="top-bar">
+        <img src="你的顶部图标路径" alt="图标">
+        验证成功祝您 人生如戏，全靠演技，早日封神
+    </div>
+    <div class="petal-container" id="petalContainer"></div>
+    <div class="content">
+        <div class="tg">请加入Q群</div>
+        <div class="title">正版验证成功❤️❤️❤️</div>
+        <div class="desc"><p>简单联系我：<a href="mailto:740912168@qq.com">点我发送邮件</a></p>
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
+<head></div>
+        <div class="desc">让人人体验科技的快乐</div>
+        <div class="qgroup">Q群1064576363</div>
+        <audio id="lighterMusic" src="/storage/emulated/0/Pictures/爱情音讯.mp3" preload="auto"></audio>
+        <a href="javascript:document.getElementById('lighterMusic').play()" class="music-link">播放音乐：打火机 - Penny</a>
+        <a href="javascript:document.getElementById('lighterMusic').pause()" class="music-link">暂停音乐</a>
+    </div>
+    <div class="bottom-bar">
+        正版验证[成功连接]
+    </div>
 
-    <!-- 2. 进阶版：预填收件人+主题+默认正文 -->
-    <p>温馨提示:请使用QQ邮件<a href="mailto:你的邮箱地址740912168@qq.com?subject=咨询事宜&body=你好，我想咨询关于______的问题，我的联系方式是______。"></a>打开</p>
+    <!-- 点击特效的脚本（新增，粘贴到这里） -->
+    <script>
+        // 花瓣飘落效果（你原有的脚本，保持不变）
+        const petalContainer = document.getElementById('petalContainer');
+        const petalCount = 50;
+        for (let i = 0; i < petalCount; i++) {
+            createPetal();
+        }
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const left = Math.random() * 100;
+            const size = 10 + Math.random() * 15;
+            const rotate = Math.random() * 360;
+            const delay = Math.random() * 5;
+            const duration = 8 + Math.random() * 10;
+            petal.style.left = `${left}%`;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size + 5}px`;
+            petal.style.animationDelay = `${delay}s`;
+            petal.style.animationDuration = `${duration}s`;
+            petal.style.transform = `rotate(${rotate}deg) scale(${0.5 + Math.random() * 0.5})`;
+            petalContainer.appendChild(petal);
+        }
+
+        // 点击屏幕特效（新增）
+        document.addEventListener('click', function(e) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9f40', '#a280ff'];
+            const size = 10 + Math.random() * 20;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            effect.style.width = `${size}px`;
+            effect.style.height = `${size}px`;
+            effect.style.borderRadius = '50%';
+            effect.style.backgroundColor = color;
+            effect.style.left = `${e.clientX - size/2}px`;
+            effect.style.top = `${e.clientY - size/2}px`;
+            document.body.appendChild(effect);
+            setTimeout(() => {
+                effect.remove();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
