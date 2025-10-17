@@ -5,30 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>验证正品界面</title>
     <style>
-        /* 你原有的所有样式（保持不变） */
+        /* 全局样式重置 - 纤细黑边效果 */
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            color: #FFD166; /* 新增：全局字体颜色设为蓝色（1#FF6B6B是标准蓝色代码） */
+            color: #1E90FF; /* 标准道奇蓝 */
+            text-shadow: 0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000; /* 细框黑边核心代码 */
         }
-        body { overflow: hidden; background: url("你的背景图路径") no-repeat center center; background-size: cover; }
-        .petal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-        .petal { position: absolute; width: 20px; height: 25px; background-color: rgba(255, 182, 193, 0.8); border-radius: 50% 0 50% 50%; animation: fall 10s linear infinite; transform-origin: center; }
-        @keyframes fall { 0% { top: -20px; transform: translateX(0) rotate(0deg) scale(0.5); opacity: 0; } 10% { opacity: 1; } 100% { top: 100%; transform: translateX(100px) rotate(360deg) scale(1); opacity: 0.5; } }
-        .content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
-        .avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 20px; }
-        .title { font-size: 24px; margin-bottom: 10px; }
+        body { 
+            overflow: hidden; 
+            background: url("你的背景图路径") no-repeat center center; 
+            background-size: cover; 
+        }
+        /* 花瓣飘落容器 */
+        .petal-container { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+        }
+        /* 花瓣样式及动画 */
+        .petal { 
+            position: absolute; 
+            width: 20px; 
+            height: 25px; 
+            background-color: rgba(255, 182, 193, 0.8); 
+            border-radius: 50% 0 50% 50%; 
+            animation: fall 10s linear infinite; 
+            transform-origin: center; 
+        }
+        @keyframes fall { 
+            0% { 
+                top: -20px; 
+                transform: translateX(0) rotate(0deg) scale(0.5); 
+                opacity: 0; 
+            } 
+            10% { opacity: 1; } 
+            100% { 
+                top: 100%; 
+                transform: translateX(100px) rotate(360deg) scale(1); 
+                opacity: 0.5; 
+            } 
+        }
+        /* 内容容器 */
+        .content { 
+            position: relative; 
+            z-index: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            text-align: center; 
+        }
+        /* 标题动画（跳动+摇晃） */
+        .title { 
+            font-size: 24px; 
+            margin-bottom: 10px; 
+            animation: jump-shake 0.8s infinite alternate; 
+        }
+        @keyframes jump-shake {
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+            }
+            100% { 
+                transform: translateY(-20px) rotate(5deg); 
+            }
+        }
+        /* 其他文本样式 */
         .tg { font-size: 18px; margin-bottom: 20px; }
         .desc { font-size: 16px; margin-bottom: 10px; }
         .qgroup { font-size: 18px; margin-bottom: 20px; }
-        .icon { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 20px; }
-        .top-bar { position: fixed; top: 0; left: 0; width: 100%; padding: 10px; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; }
-        .top-bar img { width: 20px; height: 20px; margin-right: 5px; }
-        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 5px; background-color: rgba(0, 0, 0, 0.5); text-align: center; font-size: 12px; }
-        .music-link { display: inline-block; padding: 8px 16px; background-color: rgba(255, 182, 193, 0.8); text-decoration: none; border-radius: 20px; font-size: 16px; margin-top: 10px; }
-        
-        /* 点击特效的样式（新增） */
+        /* 顶部栏 */
+        .top-bar { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 10px; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            display: flex; 
+            align-items: center; 
+        }
+        .top-bar img { 
+            width: 20px; 
+            height: 20px; 
+            margin-right: 5px; 
+        }
+        /* 底部栏 */
+        .bottom-bar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 5px; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            text-align: center; 
+            font-size: 12px; 
+        }
+        /* 音乐按钮 */
+        .music-link { 
+            display: inline-block; 
+            padding: 8px 16px; 
+            background-color: rgba(255, 182, 193, 0.8); 
+            text-decoration: none; 
+            border-radius: 20px; 
+            font-size: 16px; 
+            margin-top: 10px; 
+        }
+        /* 点击特效样式 */
         .click-effect {
             position: fixed;
             pointer-events: none;
@@ -62,9 +150,8 @@
         正版验证[成功连接]
     </div>
 
-    <!-- 点击特效的脚本（新增，粘贴到这里） -->
     <script>
-        // 花瓣飘落效果（你原有的脚本，保持不变）
+        // 花瓣飘落逻辑
         const petalContainer = document.getElementById('petalContainer');
         const petalCount = 50;
         for (let i = 0; i < petalCount; i++) {
@@ -87,7 +174,7 @@
             petalContainer.appendChild(petal);
         }
 
-        // 点击屏幕特效（新增）
+        // 点击特效逻辑
         document.addEventListener('click', function(e) {
             const effect = document.createElement('div');
             effect.className = 'click-effect';
