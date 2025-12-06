@@ -10,9 +10,7 @@
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            color: #FFB6C1; /* 标准道奇蓝 */
-            text-shadow: 0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000; /* 细框黑边核心代码 */
-        }
+            color: #FFB6C1; /* 标准道奇蓝 */}
         body { 
             overflow: hidden; 
             background: url("你的背景图路径") no-repeat center center; 
@@ -34,6 +32,202 @@
             height: 25px; 
             background-color: rgba(255, 182, 193, 0.8); 
             border-radius: 50% 0 50% 50%; 
+            animation: fall 10s linear infinite; 
+            transform-origin: center; 
+        }
+        @keyframes fall { 
+            0% { 
+                top: -20px; 
+                transform: translateX(0) rotate(0deg) scale(0.5); 
+                opacity: 0; 
+            } 
+            10% { opacity: 1; } 
+            100% { 
+                top: 100%; 
+                transform: translateX(100px) rotate(360deg) scale(1); 
+                opacity: 0.5; 
+            } 
+        }
+        /* 内容容器 */
+        .content { 
+            position: relative; 
+            z-index: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            text-align: center; 
+        }
+        /* 标题动画（跳动+摇晃） */
+        .title { 
+            font-size: 24px; 
+            margin-bottom: 10px; 
+            animation: jump-shake 0.8s infinite alternate; 
+        }
+        @keyframes jump-shake {
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+            }
+            100% { 
+                transform: translateY(-20px) rotate(5deg); 
+            }
+        }
+        /* 其他文本样式 */
+        .tg { font-size: 18px; margin-bottom: 20px; }
+        .desc { font-size: 16px; margin-bottom: 10px; }
+        .qgroup { font-size: 18px; margin-bottom: 20px; }
+        /* 顶部栏 */
+        .top-bar { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 10px; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            display: flex; 
+            align-items: center; 
+        }
+        .top-bar img { 
+            width: 20px; 
+            height: 20px; 
+            margin-right: 5px; 
+        }
+        /* 底部栏 */
+        .bottom-bar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 5px; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            text-align: center; 
+            font-size: 12px; 
+        }
+        /* 音乐按钮 */
+        .music-link { 
+            display: inline-block; 
+            padding: 8px 16px; 
+            background-color: rgba(255, 182, 193, 0.8); 
+            text-decoration: none; 
+            border-radius: 20px; 
+            font-size: 16px; 
+            margin-top: 10px; 
+        }
+        /* 点击特效样式 */
+        .click-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+            animation: clickFadeOut 1s linear forwards;
+        }
+        @keyframes clickFadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        宇秋祝您 人生如戏，全靠演技，早日封神
+    </div>
+    <div class="petal-container" id="petalContainer"></div>
+    <div class="content">
+    <!-- 页面显示时间的容器 -->
+<div id="currentTime"></div>
+
+<script>
+// 实时更新时间的函数
+function showTime() {
+  const now = new Date(); // 获取当前时间
+  // 格式化：时:分:秒（补零确保两位数）
+  const timeStr = now.toLocaleTimeString('zh-CN', { 
+    hour12: false, // 24小时制（true为12小时制）
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+  document.getElementById('currentTime').textContent = timeStr; // 渲染到页面
+}
+
+showTime(); // 页面加载时立即显示
+setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
+</script>
+　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+        <div class="desc">温馨提示:设置深色模式更好看哦</div>
+        <div class="desc">建议使用via浏览器打开此网页</div>
+        <div class="tg"><!DOCTYPE html>
+ <title>使用JavaScript跳转</title>
+ <script>
+ function redirect() {
+ window.location.href = "https://www.123912.com/s/sgPDTd-Tz1D3";
+ }
+ </script>
+</head>
+<body>
+ <span onclick="redirect()">→点我下载宇秋定制抓号器←</span>
+</body>
+</html>
+</div>
+        <div class="title">宇秋正版成功❤️❤️❤️</div>
+        <div class="desc"><p>简单联系我：<a href="mailto:740912168@qq.com">点我发送邮件</a></p></div>
+        <div class="desc">让人人体验科技的快乐</div>
+    <div class="desc">🥵群主可教上飞机(不要米)🥵</div>
+    <div class="desc">q群号:1036222312</div>
+    <div class="desc">TG:yqnbnb688</div>　
+    <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
+    　
+    <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a></div>
+    <div class="bottom-bar">
+        [连接成功]
+    </div>
+
+    <script>
+        // 花瓣飘落逻辑
+        const petalContainer = document.getElementById('petalContainer');
+        const petalCount = 50;
+        for (let i = 0; i < petalCount; i++) {
+            createPetal();
+        }
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const left = Math.random() * 100;
+            const size = 10 + Math.random() * 15;
+            const rotate = Math.random() * 360;
+            const delay = Math.random() * 5;
+            const duration = 8 + Math.random() * 10;
+            petal.style.left = `${left}%`;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size + 5}px`;
+            petal.style.animationDelay = `${delay}s`;
+            petal.style.animationDuration = `${duration}s`;
+            petal.style.transform = `rotate(${rotate}deg) scale(${0.5 + Math.random() * 0.5})`;
+            petalContainer.appendChild(petal);
+        }
+
+        // 点击特效逻辑
+        document.addEventListener('click', function(e) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9f40', '#a280ff'];
+            const size = 10 + Math.random() * 20;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            effect.style.width = `${size}px`;
+            effect.style.height = `${size}px`;
+            effect.style.borderRadius = '50%';
+            effect.style.backgroundColor = color;
+            effect.style.left = `${e.clientX - size/2}px`;
+            effect.style.top = `${e.clientY - size/2}px`;
+            document.body.appendChild(effect);
+            setTimeout(() => {
+                effect.remove();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
             animation: fall 10s linear infinite; 
             transform-origin: center; 
         }
