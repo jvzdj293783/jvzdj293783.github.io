@@ -171,16 +171,93 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
 </html>
 </div>
         <div class="title">宇秋正版成功❤️❤️❤️</div>
-        <div class="desc"><p>简单联系我：<a href="mailto:740912168@qq.com">点我发送邮件</a></p></div>
+        <div class="desc"><p>反馈：<a href="mailto:740912168@qq.com">点我发送邮件</a></p></div>
         <div class="desc">让人人体验科技的快乐</div>
     <div class="desc">🥵群主可教上飞机(不要米)🥵</div>
     <div class="desc">q群号:1036222312</div>
     <div class="desc">TG:yqnbnb688</div>　
+    <div class="desc">找群主私信获取</div>
+    <style>
+        body {text-align: center; margin-top: 100px;}
+        input {padding: 8px; width: 200px;}
+        button {padding: 8px 15px; cursor: pointer;}
+        #error {color: red; margin-top: 10px;}
+        #countTips {color: #666; margin-top: 8px;}
+    </style>
+</head>
+<body>
+    <input type="text" id="inputText" placeholder="请输入……">
+    <button onclick="checkAndJump()" id="submitBtn">验证</button>
+    <div id="error"></div>
+    <div id="countTips"></div>
+
+    <script>
+        // 配置定制文字和目标链接
+        const correctTexts = ["宇秋nb", "宇秋牛逼", "yqnb"];
+        const targetUrl = "https://www.example.com";
+        // 基础配置
+        const maxAttempts = 5; // 每次解锁可尝试次数
+        let errorCount = 0; // 当前错误次数
+        let waitMultiplier = 1; // 等待时间倍数（初始1倍）
+        const baseWaitTime = 30 * 1000; // 基础等待时间30秒
+        let isLocked = false; // 是否处于锁定状态
+
+        const inputDom = document.getElementById("inputText");
+        const btnDom = document.getElementById("submitBtn");
+        const errorDom = document.getElementById("error");
+        const countTipsDom = document.getElementById("countTips");
+
+        function checkAndJump() {
+            if (isLocked) {
+                errorDom.textContent = "当前输入错误五次现已处于锁定状态，请等待解锁！";
+                return;
+            }
+
+            const input = inputDom.value.trim();
+            // 验证输入是否正确
+            if (correctTexts.includes(input)) {
+                window.open(targetUrl, "_blank");
+                errorDom.textContent = "";
+                errorCount = 0; // 正确输入重置错误次数
+                waitMultiplier = 1; // 重置等待倍数
+                countTipsDom.textContent = "";
+            } else {
+                errorCount++;
+                const remaining = maxAttempts - errorCount;
+                errorDom.textContent = "输入错误！";
+                countTipsDom.textContent = remaining > 0 ? `剩余${remaining}次尝试机会` : "";
+
+                // 达到错误次数阈值，触发锁定
+                if (errorCount >= maxAttempts) {
+                    const waitTime = baseWaitTime * waitMultiplier;
+                    const waitSeconds = waitTime / 1000;
+                    isLocked = true;
+                    btnDom.disabled = true;
+                    errorDom.textContent = `连续输错${maxAttempts}次，将锁定${waitSeconds}秒！`;
+
+                    // 倒计时并解锁
+                    let countdown = waitSeconds;
+                    const timer = setInterval(() => {
+                        countdown--;
+                        errorDom.textContent = `锁定中，剩余${countdown}秒`;
+                        if (countdown <= 0) {
+                            clearInterval(timer);
+                            isLocked = false;
+                            btnDom.disabled = false;
+                            errorCount = 0;
+                            waitMultiplier *= 2; // 等待时间翻倍
+                            errorDom.textContent = "锁定已解除，请重新尝试！";
+                            countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+                        }
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+</body>
     <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
     　
     <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a></div>
-    <div class="bottom-bar">
-        [连接成功]
     </div>
 
     <script>
