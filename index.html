@@ -179,83 +179,157 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
     <div class="desc">可以发送验证码的纸飞机非常稀缺</div>
     <div class="desc">密码需要找群主获取(每天实时更新新版本)</div>
     <style>
-        body {text-align: center; margin-top: 100px;}
-        input {padding: 8px; width: 200px;}
-        button {padding: 8px 15px; cursor: pointer;}
-        #error {color: red; margin-top: 10px;}
-        #countTips {color: #666; margin-top: 8px;}
+        body {
+            text-align: center;
+            margin-top: 100px;
+            font-family: Arial, sans-serif;
+        }
+        input {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.2s;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        #error {
+            color: #dc3545;
+            margin-top: 12px;
+            height: 20px;
+        }
+        #countTips {
+            color: #6c757d;
+            margin-top: 8px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <input type="text" id="inputText" placeholder="请输入……">
-    <button onclick="checkAndJump()" id="submitBtn">安装纸飞机</button>
+    <input type="text" id="inputText" placeholder="请输入神秘代码" autocomplete="off">
+    <button onclick="checkAndJump()" id="submitBtn">获取</button>
     <div id="error"></div>
     <div id="countTips"></div>
 
     <script>
-        // 配置定制文字和目标链接
-        const correctTexts = ["宇秋nb", "宇秋牛逼", "yqnb"];
-        const targetUrl = "https://d6.qyshare.store/s/TBVWTxUNFQEBKFCVA50lMGVQBWGlNRUgEaKFCVA50wKFCVA50FBRoOKFCVA50KFCVA50EFGgIDBFQHKFCVA50FMOKFCVA50KFCVA50QCKFCVA50BUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGBxgHVVIDBwEHKFCVA50hoHUgVVGgMOVgQaVQZRBxoPB1RVVFYPUwYHBgMZVV5ZFRsVVlQVDRVRUw5UVFRTDxoPDg8FGgNTKFCVA50g4aVgQEKFCVA50hpTKFCVA50w9VBVYEBwZWKFCVA50wQVGxVZVlpSFQ0VY1JbUlBFVlpoBgUZBRkGBxlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50g5SBlIFKFCVA50VIaKFCVA50KFCVA50EBDxoDVKFCVA50MDGg5WBQcaUlUOKFCVA501NUUg4GKFCVA50wUGFUo=";
-        // 基础配置
-        const maxAttempts = 5; // 每次解锁可尝试次数
+        // ===== 可直接修改的配置项 =====
+        // 验证文字、专属弹窗提示、跳转链接 映射关系
+        const textConfigMap = {
+            "宇秋nb": {
+                tip: "欢迎使用普通用户对应的功能！",
+                url: "https://d6.qyshare.store/s/TBVWTxUNFQEBKFCVA50lMGVQBWGlNRUgEaKFCVA50wKFCVA50FBRoOKFCVA50KFCVA50EFGgIDBFQHKFCVA50FMOKFCVA50KFCVA50QCKFCVA50BUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGBxgHVVIDBwEHKFCVA50hoHUgVVGgMOVgQaVQZRBxoPB1RVVFYPUwYHBgMZVV5ZFRsVVlQVDRVRUw5UVFRTDxoPDg8FGgNTKFCVA50g4aVgQEKFCVA50hpTKFCVA50w9VBVYEBwZWKFCVA50wQVGxVZVlpSFQ0VY1JbUlBFVlpoBgUZBRkGBxlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50g5SBlIFKFCVA50VIaKFCVA50KFCVA50EBDxoDVKFCVA50MDGg5WBQcaUlUOKFCVA501NUUg4GKFCVA50wUGFUo="
+            },
+            "宇秋最帅": {
+                tip: "VIP专属通道已开启(待后续更新)",
+                url: "https://www.baidu.com/"
+            },
+            "yqyyds9178": {
+                tip: "当前为操作员代码！",
+                url: "https://www.example3.com"
+            }
+        };
+        const wrongTipText = "输入的文字无效！"; // 输错时显示的提示语
+        const maxAttempts = 5; // 每次解锁可尝试的次数
+        const baseWaitTime = 30 * 1000; // 基础锁定时间（毫秒），默认30秒
+        // =============================
+
         let errorCount = 0; // 当前错误次数
-        let waitMultiplier = 1; // 等待时间倍数（初始1倍）
-        const baseWaitTime = 30 * 1000; // 基础等待时间30秒
+        let waitMultiplier = 1; // 锁定时间倍数（递增）
         let isLocked = false; // 是否处于锁定状态
 
+        // DOM元素获取
         const inputDom = document.getElementById("inputText");
         const btnDom = document.getElementById("submitBtn");
         const errorDom = document.getElementById("error");
         const countTipsDom = document.getElementById("countTips");
 
+        // 初始化提示
+        countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+
         function checkAndJump() {
+            // 锁定状态直接拦截
             if (isLocked) {
-                errorDom.textContent = "当前输入错误五次现已处于锁定状态，请等待解锁！";
+                errorDom.textContent = "当前处于锁定状态，请等待解锁！";
                 return;
             }
 
             const input = inputDom.value.trim();
-            // 验证输入是否正确
-            if (correctTexts.includes(input)) {
-                window.open(targetUrl, "_blank");
+            // 空输入提示
+            if (!input) {
+                errorDom.textContent = "请输入验证文字！";
+                return;
+            }
+
+            // 验证通过：弹窗提示 + 跳转到对应链接
+            if (textConfigMap.hasOwnProperty(input)) {
+                const { tip, url } = textConfigMap[input];
+                alert(tip); // 弹出专属提示
+                window.open(url, "_blank");
                 errorDom.textContent = "";
-                errorCount = 0; // 正确输入重置错误次数
-                waitMultiplier = 1; // 重置等待倍数
-                countTipsDom.textContent = "";
-            } else {
-                errorCount++;
-                const remaining = maxAttempts - errorCount;
-                errorDom.textContent = "输入错误！";
-                countTipsDom.textContent = remaining > 0 ? `剩余${remaining}次尝试机会` : "";
+                errorCount = 0;
+                waitMultiplier = 1;
+                countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+                inputDom.value = "";
+                return;
+            }
 
-                // 达到错误次数阈值，触发锁定
-                if (errorCount >= maxAttempts) {
-                    const waitTime = baseWaitTime * waitMultiplier;
-                    const waitSeconds = waitTime / 1000;
-                    isLocked = true;
-                    btnDom.disabled = true;
-                    errorDom.textContent = `连续输错${maxAttempts}次，将锁定${waitSeconds}秒！`;
+            // 验证失败：显示自定义提示语 + 累计次数
+            errorCount++;
+            const remaining = maxAttempts - errorCount;
+            errorDom.textContent = wrongTipText;
+            countTipsDom.textContent = remaining > 0 ? `剩余${remaining}次尝试机会` : "";
 
-                    // 倒计时并解锁
-                    let countdown = waitSeconds;
-                    const timer = setInterval(() => {
-                        countdown--;
-                        errorDom.textContent = `锁定中，剩余${countdown}秒`;
-                        if (countdown <= 0) {
-                            clearInterval(timer);
-                            isLocked = false;
-                            btnDom.disabled = false;
-                            errorCount = 0;
-                            waitMultiplier *= 2; // 等待时间翻倍
-                            errorDom.textContent = "锁定已解除，请重新尝试！";
-                            countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
-                        }
-                    }, 1000);
-                }
+            // 达到次数上限：触发锁定
+            if (errorCount >= maxAttempts) {
+                lockHandler();
             }
         }
+
+        // 锁定逻辑封装
+        function lockHandler() {
+            const waitTime = baseWaitTime * waitMultiplier;
+            const waitSeconds = waitTime / 1000;
+            isLocked = true;
+            btnDom.disabled = true;
+            errorDom.textContent = `连续输错${maxAttempts}次，锁定${waitSeconds}秒！`;
+
+            // 倒计时解锁
+            let countdown = waitSeconds;
+            const timer = setInterval(() => {
+                countdown--;
+                errorDom.textContent = `锁定中，剩余${countdown}秒`;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    // 解锁后重置状态，倍数翻倍
+                    isLocked = false;
+                    btnDom.disabled = false;
+                    errorCount = 0;
+                    waitMultiplier *= 2;
+                    errorDom.textContent = "锁定已解除，请重新尝试！";
+                    countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+                }
+            }, 1000);
+        }
+
+        // 回车触发提交
+        inputDom.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") checkAndJump();
+        });
     </script>
-</body>
     <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
     　
     <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a></div>
@@ -305,4 +379,4 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
         });
     </script>
 </body>
-</html>
+            </html>
