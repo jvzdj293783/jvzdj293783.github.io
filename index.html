@@ -10,11 +10,101 @@
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            color: #FFB6C1; /* 标准道奇蓝 */}
+            color: #FFB6C1;
+        }
         body { 
             overflow: hidden; 
             background: url("你的背景图路径") no-repeat center center; 
             background-size: cover; 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        /* 公告弹窗样式 */
+        .notice-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #FFB6C1;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 9999;
+        }
+        .notice-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .notice-content {
+            font-size: 14px;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        .notice-countdown {
+            font-size: 12px;
+            color: #ccc;
+            margin: 10px 0;
+        }
+        .notice-btns {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .notice-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+        }
+        .agree-btn {
+            background: #FFB6C1;
+        }
+        .close-btn {
+            background: #666;
+        }
+        /* 下载选项弹窗样式 */
+        .download-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 350px;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid #FFB6C1;
+            border-radius: 10px;
+            padding: 25px;
+            z-index: 9999;
+            display: none;
+        }
+        .download-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .download-btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .download-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            flex: 1;
+        }
+        .official-btn {
+            background: #FFB6C1;
+        }
+        .replace-btn {
+            background: #007bff;
         }
         /* 花瓣飘落容器 */
         .petal-container { 
@@ -24,6 +114,7 @@
             width: 100%; 
             height: 100%; 
             pointer-events: none; 
+            z-index: 0;
         }
         /* 花瓣样式及动画 */
         .petal { 
@@ -58,6 +149,8 @@
             justify-content: center; 
             height: 100vh; 
             text-align: center; 
+            padding: 0 20px;
+            display: none; /* 初始隐藏，同意后显示 */
         }
         /* 标题动画（跳动+摇晃） */
         .title { 
@@ -74,9 +167,19 @@
             }
         }
         /* 其他文本样式 */
-        .tg { font-size: 18px; margin-bottom: 20px; }
-        .desc { font-size: 16px; margin-bottom: 10px; }
-        .qgroup { font-size: 18px; margin-bottom: 20px; }
+        .tg { 
+            font-size: 18px; 
+            margin: 15px 0;
+            cursor: pointer;
+        }
+        .desc { 
+            font-size: 16px; 
+            margin: 5px 0;
+        }
+        .qgroup { 
+            font-size: 18px; 
+            margin-bottom: 20px; 
+        }
         /* 顶部栏 */
         .top-bar { 
             position: fixed; 
@@ -87,6 +190,7 @@
             background-color: rgba(0, 0, 0, 0.5); 
             display: flex; 
             align-items: center; 
+            z-index: 99;
         }
         .top-bar img { 
             width: 20px; 
@@ -103,6 +207,7 @@
             background-color: rgba(0, 0, 0, 0.5); 
             text-align: center; 
             font-size: 12px; 
+            z-index: 99;
         }
         /* 音乐按钮 */
         .music-link { 
@@ -126,70 +231,14 @@
             0% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(0); }
         }
-    </style>
-</head>
-<body>
-    <div class="top-bar">
-        宇秋祝您 人生如戏，全靠演技，早日封神
-    </div>
-    <div class="petal-container" id="petalContainer"></div>
-    <div class="content">
-    <!-- 页面显示时间的容器 -->
-<div id="currentTime"></div>
-
-<script>
-// 实时更新时间的函数
-function showTime() {
-  const now = new Date(); // 获取当前时间
-  // 格式化：时:分:秒（补零确保两位数）
-  const timeStr = now.toLocaleTimeString('zh-CN', { 
-    hour12: false, // 24小时制（true为12小时制）
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  });
-  document.getElementById('currentTime').textContent = timeStr; // 渲染到页面
-}
-
-showTime(); // 页面加载时立即显示
-setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
-</script>
-　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
-        <div class="desc">温馨提示:设置深色模式更好看哦</div>
-        <div class="desc">建议使用via浏览器打开此网页</div>
-        <div class="tg"><!DOCTYPE html>
- <title>使用JavaScript跳转</title>
- <script>
- function redirect() {
- window.location.href = "https://d2.qyun.store/s/TBVWTxUNFQYKFCVA50VlUDD1VUGlEBVgQaKFCVA50w4OVBoOKFCVA501QPGgBWBKFCVA50KFCVA50HBVUKFCVA50VFYBURUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgHKFCVA50RgEBQRTVQQFBhpTBwKFCVA50EGgNUVlQaVlUHKFCVA50hoEKFCVA50FUPBKFCVA50cKFCVA50D1IFBVQZVV5ZFRsVVlQVDRUHBwdUD1QPURpVVKFCVA50QPGgMFVKFCVA50KFCVA50aDlYGKFCVA50RoHDwYOBgIFBVMEVQUVGxVZVlpSFQ0V0pmw0JC80pmt0r-B0b2k0riKFCVA500q6faNKZsNCQvNKZrdK_gRlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50gcGB1EPKFCVA50QEaUw8PBRoDBVEKFCVA50Gg8CKFCVA50gQaVQYOBFUCDgMHBFRSFUo=";
- }
- </script>
-</head>
-<body>
- <span onclick="redirect()">→点我下载宇秋定制抓号器←</span>
-</body>
-</html>
-</div>
-        <div class="title">宇秋正版成功❤️❤️❤️</div>
-        <div class="desc"><p>反馈：<a href="mailto:740912168@qq.com">点我发送邮件</a></p></div>
-        <div class="desc">让人人体验科技的快乐</div>
-    <div class="desc">🥵群主可教上飞机(不要米)🥵</div>
-    <div class="desc">q群号:1036222312</div>
-    <div class="desc">TG:yqnbnb688</div>　
-    <div class="desc">需要输入神秘代码</div>
-    <div class="desc">(每个神秘代码都不同)</div>
-    <style>
-        body {
-            text-align: center;
-            margin-top: 100px;
-            font-family: Arial, sans-serif;
-        }
+        /* 输入框和按钮样式 */
         input {
             padding: 10px;
             width: 250px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            margin-right: 8px;
+            margin: 15px 8px 0 0;
+            color: #333;
         }
         button {
             padding: 10px 20px;
@@ -217,68 +266,194 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
             margin-top: 8px;
             font-size: 14px;
         }
+        #currentTime {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        a {
+            color: #FFB6C1;
+            text-decoration: none;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
-    <input type="text" id="inputText" placeholder="请输入神秘代码" autocomplete="off">
-    <button onclick="checkAndJump()" id="submitBtn">获取</button>
-    <div id="error"></div>
-    <div id="countTips"></div>
+    <!-- 公告弹窗 -->
+    <div class="notice-modal" id="noticeModal">
+        <div class="notice-title">公告</div>
+        <div class="notice-content">
+            欢迎使用宇秋网页！<br>
+            1.请合理运用此网页 <br>
+            2.此网页仅用于宇秋学习参考<br>
+            3.有什么事请联系群主<br>
+        </div>
+        <div class="notice-countdown" id="countdownText">倒计时：3秒后可操作</div>
+        <div class="notice-btns">
+            <button class="notice-btn agree-btn" id="agreeBtn" disabled>同意</button>
+            <button class="notice-btn close-btn" id="closeBtn" disabled>关闭</button>
+        </div>
+    </div>
+
+    <!-- 下载选项弹窗 -->
+    <div class="download-modal" id="downloadModal">
+        <div class="download-title">选择下载版本</div>
+        <div class="download-btns">
+            <button class="download-btn official-btn" id="officialBtn">下载正式版</button>
+            <button class="download-btn replace-btn" id="replaceBtn">下载替登版</button>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        宇秋祝您 人生如戏，全靠演技，早日封神
+    </div>
+    <div class="petal-container" id="petalContainer"></div>
+    <div class="content" id="mainContent">
+        <!-- 页面显示时间的容器 -->
+        <div id="currentTime"></div>
+
+        <div class="desc">温馨提示:设置深色模式更好看哦</div>
+        <div class="desc">建议使用via浏览器打开此网页</div>
+        　　　　　　　　　　　　　　　　　
+        <div class="title">宇秋正版成功❤️❤️❤️</div>
+        <div class="desc"><p>反馈：<a href="mailto:740912168@qq.com">点我发送邮件</a></p></div>
+        <div class="desc">让人人体验科技的快乐</div>
+        <div class="desc">🥵群主可教上飞机(不要米)🥵</div>
+        <div class="desc">q群号:1036222312</div>
+        <div class="desc">TG:yqnbnb688</div>
+        <div class="desc">需要输入神秘代码</div>
+        <div class="desc">(每个神秘代码都不同)</div>
+
+        <!-- 卡密验证区域 -->
+        <input type="text" id="inputText" placeholder="请输入神秘代码" autocomplete="off">
+        <button onclick="checkAndJump()" id="submitBtn">获取</button>
+        <div id="error"></div>
+        <div id="countTips"></div>
+
+        <!-- 社交链接 -->
+        <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
+        <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a>
+    </div>
 
     <script>
+        // 公告弹窗逻辑
+        const noticeModal = document.getElementById('noticeModal');
+        const agreeBtn = document.getElementById('agreeBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const countdownText = document.getElementById('countdownText');
+        const mainContent = document.getElementById('mainContent');
+        let countdown = 3;
+
+        // 下载弹窗元素
+        const downloadModal = document.getElementById('downloadModal');
+        const officialBtn = document.getElementById('officialBtn');
+        const replaceBtn = document.getElementById('replaceBtn');
+
+        // 正式版和替登版下载链接（可自行修改）
+        const officialUrl = "https://d6.qyshare.store/s/TBVWTxUNFQEBKFCVA50lMGVQBWGlNRUgEaKFCVA50wKFCVA50FBRoOKFCVA50KFCVA50EFGgIDBFQHKFCVA50FMOKFCVA50KFCVA50QCKFCVA50BUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGBxgHVVIDBwEHKFCVA50hoHUgVVGgMOVgQaVQZRBxoPB1RVVFYPUwYHBgMZVV5ZFRsVVlQVDRVRUw5UVFRTDxoPDg8FGgNTKFCVA50g4aVgQEKFCVA50hpTKFCVA50w9VBVYEBwZWKFCVA50wQVGxVZVlpSFQ0VY1JbUlBFVlpoBgUZBRkGBxlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50g5SBlIFKFCVA50VIaKFCVA50KFCVA50EBDxoDVKFCVA50MDGg5WBQcaUlUOKFCVA501NUUg4GKFCVA50wUGFUo=";
+        const replaceUrl = "https://d2.qyun.store/s/TBVWTxUNFQYKFCVA50VlUDD1VUGlEBVgQaKFCVA50w4OVBoOKFCVA501QPGgBWBKFCVA50KFCVA50HBVUKFCVA50VFYBURUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgHKFCVA50RgEBQRTVQQFBhpTBwKFCVA50EGgNUVlQaVlUHKFCVA50hoEKFCVA50FUPBKFCVA50cKFCVA50D1IFBVQZVV5ZFRsVVlQVDRUHBwdUD1QPURpVVKFCVA50QPGgMFVKFCVA50KFCVA50aDlYGKFCVA50RoHDwYOBgIFBVMEVQUVGxVZVlpSFQ0V0pmw0JC80pmt0r-B0b2k0riKFCVA500q6faNKZsNCQvNKZrdK_gRlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50gcGB1EPKFCVA50QEaUw8PBRoDBVEKFCVA50Gg8CKFCVA50gQaVQYOBFUCDgMHBFRSFUo=";
+
+        // 倒计时函数
+        const countdownTimer = setInterval(() => {
+            countdown--;
+            countdownText.textContent = `倒计时：${countdown}秒后可操作`;
+            if (countdown <= 0) {
+                clearInterval(countdownTimer);
+                countdownText.textContent = "可进行操作";
+                agreeBtn.disabled = false;
+                closeBtn.disabled = false;
+            }
+        }, 1000);
+
+        // 同意按钮：关闭弹窗，显示主内容
+        agreeBtn.addEventListener('click', () => {
+            noticeModal.style.display = 'none';
+            mainContent.style.display = 'flex';
+        });
+
+        // 关闭按钮：退出网站
+        closeBtn.addEventListener('click', () => {
+            window.close();
+            // 部分浏览器不支持window.close()，补充跳转空白页
+            window.location.href = 'about:blank';
+        });
+
+        // 正式版下载按钮逻辑
+        officialBtn.addEventListener('click', () => {
+            window.open(officialUrl, "_blank");
+            downloadModal.style.display = 'none';
+        });
+
+        // 替登版下载按钮逻辑
+        replaceBtn.addEventListener('click', () => {
+            window.open(replaceUrl, "_blank");
+            downloadModal.style.display = 'none';
+        });
+
+        // 实时更新时间的函数
+        function showTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeStr;
+        }
+        showTime();
+        setInterval(showTime, 1000);
+
         // ===== 可直接修改的配置项 =====
-        // 验证文字、专属弹窗提示、跳转链接 映射关系
         const textConfigMap = {
             "yqtg666": {
-                tip: "您输入的是获取纸飞机的代码！",
-                url: "https://d6.qyshare.store/s/TBVWTxUNFQEBKFCVA50lMGVQBWGlNRUgEaKFCVA50wKFCVA50FBRoOKFCVA50KFCVA50EFGgIDBFQHKFCVA50FMOKFCVA50KFCVA50QCKFCVA50BUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGBxgHVVIDBwEHKFCVA50hoHUgVVGgMOVgQaVQZRBxoPB1RVVFYPUwYHBgMZVV5ZFRsVVlQVDRVRUw5UVFRTDxoPDg8FGgNTKFCVA50g4aVgQEKFCVA50hpTKFCVA50w9VBVYEBwZWKFCVA50wQVGxVZVlpSFQ0VY1JbUlBFVlpoBgUZBRkGBxlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50g5SBlIFKFCVA50VIaKFCVA50KFCVA50EBDxoDVKFCVA50MDGg5WBQcaUlUOKFCVA501NUUg4GKFCVA50wUGFUo="
+                tip: "您输入的是获取纸飞机的代码！"
             },
-            "宇秋最帅": {
-                tip: "(待后续更新)",
-                url: "https://www.baidu.com/"
+            "pjvpn123": {
+                tip: "您输入的是获取破解vpn的代码",
+                url: "https://d3.qyshare.store/s/TBVWTxUNFQ9VB1JVKFCVA50w4HGgZVU1EaKFCVA501IFKFCVA50xpWVVIOGgZVDwQHDwVTKFCVA50VVUBRUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGKFCVA50hgGKFCVA50lYKFCVA50BVJWBhoDVFFUGgMEVlEaVVYOVBoDKFCVA50VYDBQYPVQ9TBgQZVV5ZFRsVVlQVDRVRDlIFBwMOBBoPBg4CGgNTBKFCVA50QaDgFTBBoFKFCVA50QEHU1MCDw8CDgcVGxVZVlpSFQ0V0IyI37uBYWd5aKFCVA50UZKFCVA50RkKFCVA50GVZHXBUbFVRYWUNSWUNjTkdSFQ0VVkdHW15UVkNeWFkYQVlTGVZZU0VYXlMZR1ZUXFZQUhpWRVRfXkFSFRsVVlMVDRUEKFCVA50wJTKFCVA50FFWKFCVA50xoGBKFCVA50KFCVA50DGgNVUlUaDlRWBBoEUwEODlYBBwNSKFCVA50w8VSg=="
             },
             "yqnbyyds9178": {
                 tip: "当前为操作员代码！",
                 url: "https://www.example3.com"
             }
         };
-        const wrongTipText = "输入的文字无效！"; // 输错时显示的提示语
-        const maxAttempts = 5; // 每次解锁可尝试的次数
-        const baseWaitTime = 30 * 1000; // 基础锁定时间（毫秒），默认30秒
+        const wrongTipText = "输入的文字无效！";
+        const maxAttempts = 5;
+        const baseWaitTime = 30 * 1000;
         // =============================
 
-        let errorCount = 0; // 当前错误次数
-        let waitMultiplier = 1; // 锁定时间倍数（递增）
-        let isLocked = false; // 是否处于锁定状态
+        let errorCount = 0;
+        let waitMultiplier = 1;
+        let isLocked = false;
 
-        // DOM元素获取
         const inputDom = document.getElementById("inputText");
         const btnDom = document.getElementById("submitBtn");
         const errorDom = document.getElementById("error");
         const countTipsDom = document.getElementById("countTips");
 
-        // 初始化提示
         countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
 
         function checkAndJump() {
-            // 锁定状态直接拦截
             if (isLocked) {
                 errorDom.textContent = "当前处于锁定状态，请等待解锁！";
                 return;
             }
 
             const input = inputDom.value.trim();
-            // 空输入提示
             if (!input) {
                 errorDom.textContent = "请输入验证文字！";
                 return;
             }
 
-            // 验证通过：弹窗提示 + 跳转到对应链接
             if (textConfigMap.hasOwnProperty(input)) {
-                const { tip, url } = textConfigMap[input];
-                alert(tip); // 弹出专属提示
-                window.open(url, "_blank");
+                const { tip, url } = textConfigMap[input] || {};
+                alert(tip);
+                // 单独处理yqtg666，显示下载选项弹窗
+                if (input === "yqtg666") {
+                    downloadModal.style.display = 'block';
+                } else if (url) {
+                    window.open(url, "_blank");
+                }
                 errorDom.textContent = "";
                 errorCount = 0;
                 waitMultiplier = 1;
@@ -287,19 +462,16 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
                 return;
             }
 
-            // 验证失败：显示自定义提示语 + 累计次数
             errorCount++;
             const remaining = maxAttempts - errorCount;
             errorDom.textContent = wrongTipText;
             countTipsDom.textContent = remaining > 0 ? `剩余${remaining}次尝试机会` : "";
 
-            // 达到次数上限：触发锁定
             if (errorCount >= maxAttempts) {
                 lockHandler();
             }
         }
 
-        // 锁定逻辑封装
         function lockHandler() {
             const waitTime = baseWaitTime * waitMultiplier;
             const waitSeconds = waitTime / 1000;
@@ -307,14 +479,12 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
             btnDom.disabled = true;
             errorDom.textContent = `连续输错${maxAttempts}次，锁定${waitSeconds}秒！`;
 
-            // 倒计时解锁
             let countdown = waitSeconds;
             const timer = setInterval(() => {
                 countdown--;
                 errorDom.textContent = `锁定中，剩余${countdown}秒`;
                 if (countdown <= 0) {
                     clearInterval(timer);
-                    // 解锁后重置状态，倍数翻倍
                     isLocked = false;
                     btnDom.disabled = false;
                     errorCount = 0;
@@ -325,17 +495,10 @@ setInterval(showTime, 1000); // 每秒更新一次（实时跳动）
             }, 1000);
         }
 
-        // 回车触发提交
         inputDom.addEventListener("keydown", (e) => {
             if (e.key === "Enter") checkAndJump();
         });
-    </script>
-    <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
-    　
-    <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a></div>
-    </div>
 
-    <script>
         // 花瓣飘落逻辑
         const petalContainer = document.getElementById('petalContainer');
         const petalCount = 50;
