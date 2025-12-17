@@ -22,6 +22,19 @@
             margin-top: 100px;
             /* 新增：确保背景覆盖全屏，避免内容溢出影响 */
             min-height: 100vh;
+            /* 优化1：添加背景渐变遮罩，提升文字可读性 */
+            position: relative;
+        }
+        /* 背景渐变遮罩层 */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+            z-index: -1;
         }
         /* 公告弹窗样式 */
         .notice-modal {
@@ -36,11 +49,15 @@
             border-radius: 10px;
             padding: 20px;
             z-index: 9999;
+            /* 优化2：弹窗添加轻微发光效果 */
+            box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
         }
         .notice-title {
             font-size: 18px;
             margin-bottom: 10px;
             font-weight: bold;
+            /* 优化3：标题添加文字发光 */
+            text-shadow: 0 0 8px #FFB6C1;
         }
         .notice-content {
             font-size: 14px;
@@ -63,12 +80,22 @@
             border-radius: 5px;
             cursor: pointer;
             color: #fff;
+            /* 优化4：按钮添加hover发光 */
+            transition: all 0.3s ease;
         }
         .agree-btn {
             background: #FFB6C1;
         }
+        .agree-btn:hover {
+            box-shadow: 0 0 10px #FFB6C1;
+            transform: scale(1.05);
+        }
         .close-btn {
             background: #666;
+        }
+        .close-btn:hover {
+            box-shadow: 0 0 10px #666;
+            transform: scale(1.05);
         }
         /* 下载选项弹窗样式 */
         .download-modal {
@@ -84,11 +111,13 @@
             padding: 25px;
             z-index: 9999;
             display: none;
+            box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
         }
         .download-title {
             font-size: 18px;
             margin-bottom: 20px;
             font-weight: bold;
+            text-shadow: 0 0 8px #FFB6C1;
         }
         .download-btns {
             display: flex;
@@ -102,12 +131,21 @@
             cursor: pointer;
             color: #fff;
             flex: 1;
+            transition: all 0.3s ease;
         }
         .official-btn {
             background: #FFB6C1;
         }
+        .official-btn:hover {
+            box-shadow: 0 0 10px #FFB6C1;
+            transform: scale(1.05);
+        }
         .replace-btn {
             background: #007bff;
+        }
+        .replace-btn:hover {
+            box-shadow: 0 0 10px #007bff;
+            transform: scale(1.05);
         }
         /* 花瓣飘落容器 */
         .petal-container { 
@@ -124,10 +162,11 @@
             position: absolute; 
             width: 20px; 
             height: 25px; 
-            background-color: rgba(255, 182, 193, 0.8); 
             border-radius: 50% 0 50% 50%; 
             animation: fall 10s linear infinite; 
             transform-origin: center; 
+            /* 优化5：花瓣颜色随机（通过JS控制），这里保留基础色 */
+            opacity: 0.8;
         }
         @keyframes fall { 
             0% { 
@@ -155,11 +194,40 @@
             padding: 0 20px;
             display: none; /* 初始隐藏，同意后显示 */
         }
+        /* ========== 头像样式（含旋转动画） ========== */
+        .avatar {
+            width: 80px; /* 头像大小，可自行调整 */
+            height: 80px;
+            border-radius: 50%; /* 圆形头像 */
+            border: 2px solid #FFB6C1; /* 粉色边框，和页面主色一致 */
+            margin-bottom: 20px; /* 和下方文字的间距 */
+            animation: rotate 10s linear infinite; /* 10秒一圈，慢速旋转 */
+            /* 优化6：头像添加发光边框和hover加速 */
+            box-shadow: 0 0 10px rgba(255, 182, 193, 0.6);
+            transition: animation 0.5s ease;
+        }
+        /* 头像悬浮加速 */
+        .avatar:hover {
+            animation: rotate 3s linear infinite; /* 悬浮时3秒一圈 */
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.9);
+        }
+        /* 旋转动画关键帧 */
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* ==================================== */
         /* 标题动画（跳动+摇晃） */
         .title { 
             font-size: 24px; 
             margin-bottom: 10px; 
             animation: jump-shake 0.8s infinite alternate; 
+            /* 优化7：标题强化发光 */
+            text-shadow: 0 0 10px #FFB6C1, 0 0 20px #FFB6C1;
         }
         @keyframes jump-shake {
             0% { 
@@ -174,6 +242,8 @@
             font-size: 18px; 
             margin: 15px 0;
             cursor: pointer;
+            /* 优化8：链接文字hover发光 */
+            transition: text-shadow 0.3s ease;
         }
         .desc { 
             font-size: 16px; 
@@ -194,6 +264,9 @@
             display: flex; 
             align-items: center; 
             z-index: 99;
+            /* 优化9：顶部栏毛玻璃效果 */
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 182, 193, 0.2);
         }
         .top-bar img { 
             width: 20px; 
@@ -211,6 +284,9 @@
             text-align: center; 
             font-size: 12px; 
             z-index: 99;
+            /* 优化9：底部栏毛玻璃效果 */
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 182, 193, 0.2);
         }
         /* 音乐按钮 */
         .music-link { 
@@ -221,6 +297,11 @@
             border-radius: 20px; 
             font-size: 16px; 
             margin-top: 10px; 
+            transition: all 0.3s ease;
+        }
+        .music-link:hover {
+            box-shadow: 0 0 10px #FFB6C1;
+            transform: scale(1.05);
         }
         /* 点击特效样式 */
         .click-effect {
@@ -242,6 +323,13 @@
             border-radius: 4px;
             margin: 15px 8px 0 0;
             color: #333;
+            /* 优化10：输入框聚焦发光 */
+            transition: box-shadow 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 8px #FFB6C1;
+            border-color: #FFB6C1;
         }
         button {
             padding: 10px 20px;
@@ -250,7 +338,7 @@
             border-radius: 4px;
             background-color: #007bff;
             color: #fff;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
         }
         button:disabled {
             background-color: #6c757d;
@@ -258,11 +346,14 @@
         }
         button:hover:not(:disabled) {
             background-color: #0056b3;
+            box-shadow: 0 0 8px #007bff;
+            transform: scale(1.05);
         }
         #error {
             color: #dc3545;
             margin-top: 12px;
             height: 20px;
+            text-shadow: 0 0 5px #dc3545;
         }
         #countTips {
             color: #6c757d;
@@ -272,11 +363,16 @@
         #currentTime {
             font-size: 18px;
             margin-bottom: 10px;
+            text-shadow: 0 0 5px #FFB6C1;
         }
         a {
             color: #FFB6C1;
             text-decoration: none;
             margin: 5px;
+            transition: text-shadow 0.3s ease;
+        }
+        a:hover {
+            text-shadow: 0 0 8px #FFB6C1;
         }
         /* 音乐播放器样式 - 新增音乐名称显示 */
         .music-player {
@@ -289,6 +385,9 @@
             border-radius: 8px;
             border: 1px solid #FFB6C1;
             text-align: center;
+            /* 优化11：音乐播放器毛玻璃+发光 */
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 8px rgba(255, 182, 193, 0.4);
         }
         .music-name {
             font-size: 14px;
@@ -297,9 +396,12 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 200px;
+            text-shadow: 0 0 5px #FFB6C1;
         }
         .music-player audio {
             width: 200px;
+            /* 优化12：音频控件样式适配 */
+            filter: hue-rotate(320deg); /* 让音频控件偏粉色 */
         }
     </style>
 </head>
@@ -345,6 +447,9 @@
     <div class="content" id="mainContent">
         <!-- 页面显示时间的容器 -->
         <div id="currentTime"></div>
+
+        <!-- 头像HTML -->
+        <img src="IMG_4068_edit_229293668334280.jpg" class="avatar" alt="头像">
 
         <div class="desc">温馨提示:设置深色模式更好看哦</div>
         <div class="desc">建议使用via浏览器打开此网页</div>
@@ -537,9 +642,17 @@
             if (e.key === "Enter") checkAndJump();
         });
 
-        // 花瓣飘落逻辑
+        // 花瓣飘落逻辑（优化：花瓣颜色随机）
         const petalContainer = document.getElementById('petalContainer');
         const petalCount = 50;
+        // 粉色系配色表
+        const petalColors = [
+            'rgba(255, 182, 193, 0.8)',
+            'rgba(255, 192, 203, 0.8)',
+            'rgba(255, 200, 210, 0.8)',
+            'rgba(255, 218, 225, 0.8)',
+            'rgba(255, 224, 230, 0.8)'
+        ];
         for (let i = 0; i < petalCount; i++) {
             createPetal();
         }
@@ -551,6 +664,9 @@
             const rotate = Math.random() * 360;
             const delay = Math.random() * 5;
             const duration = 8 + Math.random() * 10;
+            // 随机选择花瓣颜色
+            const randomColor = petalColors[Math.floor(Math.random() * petalColors.length)];
+            petal.style.backgroundColor = randomColor;
             petal.style.left = `${left}%`;
             petal.style.width = `${size}px`;
             petal.style.height = `${size + 5}px`;
@@ -560,11 +676,11 @@
             petalContainer.appendChild(petal);
         }
 
-        // 点击特效逻辑
+        // 点击特效逻辑（优化：点击特效颜色和花瓣呼应）
         document.addEventListener('click', function(e) {
             const effect = document.createElement('div');
             effect.className = 'click-effect';
-            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9f40', '#a280ff'];
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9f40', '#a280ff', '#FFB6C1'];
             const size = 10 + Math.random() * 20;
             const color = colors[Math.floor(Math.random() * colors.length)];
             effect.style.width = `${size}px`;
