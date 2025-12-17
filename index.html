@@ -14,11 +14,14 @@
         }
         body { 
             overflow: hidden; 
-            background: url("你的背景图路径") no-repeat center center; 
+            /* 关键修改：替换为仓库中的背景图路径 */
+            background: url("IMG_4344.jpg") no-repeat center center fixed; 
             background-size: cover; 
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 100px;
+            /* 新增：确保背景覆盖全屏，避免内容溢出影响 */
+            min-height: 100vh;
         }
         /* 公告弹窗样式 */
         .notice-modal {
@@ -307,7 +310,7 @@
         <audio controls loop autoplay muted>
             <source src="https://raw.githubusercontent.com/jvzdj293783/jvzdj293783.github.io/refs/heads/main/%E9%9A%BE%E7%94%9F%E6%81%A8%20-%20%E7%A4%BC%E8%B6%8A%26%E7%A7%8B%E6%88%90.mp3" type="audio/mpeg">
             你的浏览器不支持音频播放
-        
+        </audio>
     </div>
 
     <!-- 公告弹窗 -->
@@ -577,4 +580,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
