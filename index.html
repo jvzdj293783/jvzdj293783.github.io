@@ -275,16 +275,25 @@
             text-decoration: none;
             margin: 5px;
         }
-        /* 音乐播放器样式 */
+        /* 音乐播放器样式 - 新增音乐名称显示 */
         .music-player {
             position: fixed;
             top: 60px;
             right: 20px;
             z-index: 999;
             background: rgba(0,0,0,0.7);
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #FFB6C1;
+            text-align: center;
+        }
+        .music-name {
+            font-size: 14px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
         }
         .music-player audio {
             width: 200px;
@@ -292,12 +301,13 @@
     </style>
 </head>
 <body>
-    <!-- 音乐播放器 -->
+    <!-- 音乐播放器 - 新增音乐名称 -->
     <div class="music-player">
-        <audio controls loop>
+        <div class="music-name" id="musicName">难生恨 - 韦越&秋成</div>
+        <audio controls loop autoplay muted>
             <source src="https://raw.githubusercontent.com/jvzdj293783/jvzdj293783.github.io/refs/heads/main/%E9%9A%BE%E7%94%9F%E6%81%A8%20-%20%E7%A4%BC%E8%B6%8A%26%E7%A7%8B%E6%88%90.mp3" type="audio/mpeg">
             你的浏览器不支持音频播放
-        </audio>
+        
     </div>
 
     <!-- 公告弹窗 -->
@@ -383,6 +393,9 @@
                 countdownText.textContent = "可进行操作";
                 agreeBtn.disabled = false;
                 closeBtn.disabled = false;
+                // 自动播放取消静音 - 解决浏览器自动播放限制
+                const audio = document.querySelector('audio');
+                audio.muted = false;
             }
         }, 1000);
 
@@ -564,4 +577,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
