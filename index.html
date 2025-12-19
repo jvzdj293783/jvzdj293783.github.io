@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -15,18 +14,14 @@
         }
         body { 
             overflow: hidden; 
-            /* 关键修改：替换为仓库中的背景图路径 */
-            background: url("IMG_4343.jpg") no-repeat center center fixed; 
+            background: url("https://d6.qyshare.store:2083/s/TBVWTxUNFQVSUQIBBlVWGgJTKFCVA50QEaKFCVA50wKFCVA50EKFCVA50RoOBFFWGgMPBwRWUwMGBFUKFCVA50VhUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGDhhTBKFCVA50YDB1UBDxoOBVJVGgMDBwIaVVYEKFCVA50xoPDgEHBVZWB1EBBwIZVV5ZFRsVVlQVDRUDBQQHDlJUKFCVA50BoDKFCVA50QKFCVA50CGgNVDwEaVgMHKFCVA50RpTVVVWU1IGUgUCBKFCVA50QVGxVZVlpSFQ0VfnpwaKFCVA50MEKFCVA50wQZXUdQFRsVVFhZQ1JZQ2NOR1IVDRVeWlZQUhhdR1JQFRsVVlMVDRVTVVFUBKFCVA508HURoCD1UHGgNVUwEaDgNTVhpWBKFCVA50MEUlIFKFCVA50QUDUQEVSg==") no-repeat center center fixed; 
             background-size: cover; 
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 100px;
-            /* 新增：确保背景覆盖全屏，避免内容溢出影响 */
             min-height: 100vh;
-            /* 优化1：添加背景渐变遮罩，提升文字可读性 */
             position: relative;
         }
-        /* 背景渐变遮罩层 */
         body::before {
             content: "";
             position: absolute;
@@ -37,7 +32,6 @@
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
             z-index: -1;
         }
-        /* 公告弹窗样式 */
         .notice-modal {
             position: fixed;
             top: 50%;
@@ -50,14 +44,12 @@
             border-radius: 10px;
             padding: 20px;
             z-index: 9999;
-            /* 优化2：弹窗添加轻微发光效果 */
             box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
         }
         .notice-title {
             font-size: 18px;
             margin-bottom: 10px;
             font-weight: bold;
-            /* 优化3：标题添加文字发光 */
             text-shadow: 0 0 8px #FFB6C1;
         }
         .notice-content {
@@ -81,7 +73,6 @@
             border-radius: 5px;
             cursor: pointer;
             color: #fff;
-            /* 优化4：按钮添加hover发光 */
             transition: all 0.3s ease;
         }
         .agree-btn {
@@ -98,7 +89,6 @@
             box-shadow: 0 0 10px #666;
             transform: scale(1.05);
         }
-        /* 下载选项弹窗样式 */
         .download-modal {
             position: fixed;
             top: 50%;
@@ -148,7 +138,6 @@
             box-shadow: 0 0 10px #007bff;
             transform: scale(1.05);
         }
-        /* 花瓣飘落容器 */
         .petal-container { 
             position: fixed; 
             top: 0; 
@@ -158,7 +147,6 @@
             pointer-events: none; 
             z-index: 0;
         }
-        /* 花瓣样式及动画 */
         .petal { 
             position: absolute; 
             width: 20px; 
@@ -166,7 +154,6 @@
             border-radius: 50% 0 50% 50%; 
             animation: fall 10s linear infinite; 
             transform-origin: center; 
-            /* 优化5：花瓣颜色随机（通过JS控制），这里保留基础色 */
             opacity: 0.8;
         }
         @keyframes fall { 
@@ -182,7 +169,6 @@
                 opacity: 0.5; 
             } 
         }
-        /* 内容容器 */
         .content { 
             position: relative; 
             z-index: 1; 
@@ -193,21 +179,18 @@
             height: 100vh; 
             text-align: center; 
             padding: 0 20px;
-            display: none; /* 初始隐藏，同意后显示 */
+            display: none;
         }
-        /* ========== 头像样式（含旋转动画） ========== */
         .avatar {
-            width: 80px; /* 头像大小，可自行调整 */
+            width: 80px;
             height: 80px;
-            border-radius: 50%; /* 圆形头像 */
-            border: 2px solid #FFB6C1; /* 粉色边框，和页面主色一致 */
-            margin-bottom: 20px; /* 和下方文字的间距 */
-            animation: rotate 10s linear infinite; /* 10秒一圈，慢速旋转 */
-            /* 优化6：头像添加发光边框和hover加速 */
+            border-radius: 50%;
+            border: 2px solid #FFB6C1;
+            margin-bottom: 20px;
+            animation: rotate 10s linear infinite;
             box-shadow: 0 0 10px rgba(255, 182, 193, 0.6);
             transition: animation 0.5s ease;
         }
-        /* 旋转动画关键帧 */
         @keyframes rotate {
             0% {
                 transform: rotate(0deg);
@@ -216,13 +199,10 @@
                 transform: rotate(360deg);
             }
         }
-        /* ==================================== */
-        /* 标题动画（跳动+摇晃） */
         .title { 
             font-size: 24px; 
             margin-bottom: 10px; 
             animation: jump-shake 0.8s infinite alternate; 
-            /* 优化7：标题强化发光 */
             text-shadow: 0 0 10px #FFB6C1, 0 0 20px #FFB6C1;
         }
         @keyframes jump-shake {
@@ -233,12 +213,10 @@
                 transform: translateY(-20px) rotate(5deg); 
             }
         }
-        /* 其他文本样式 */
         .tg { 
             font-size: 18px; 
             margin: 15px 0;
             cursor: pointer;
-            /* 优化8：链接文字hover发光 */
             transition: text-shadow 0.3s ease;
         }
         .desc { 
@@ -249,7 +227,6 @@
             font-size: 18px; 
             margin-bottom: 20px; 
         }
-        /* 顶部栏 */
         .top-bar { 
             position: fixed; 
             top: 0; 
@@ -260,7 +237,6 @@
             display: flex; 
             align-items: center; 
             z-index: 99;
-            /* 优化9：顶部栏毛玻璃效果 */
             backdrop-filter: blur(5px);
             border-bottom: 1px solid rgba(255, 182, 193, 0.2);
         }
@@ -269,7 +245,6 @@
             height: 20px; 
             margin-right: 5px; 
         }
-        /* 底部栏 */
         .bottom-bar { 
             position: fixed; 
             bottom: 0; 
@@ -280,26 +255,9 @@
             text-align: center; 
             font-size: 12px; 
             z-index: 99;
-            /* 优化9：底部栏毛玻璃效果 */
             backdrop-filter: blur(5px);
             border-top: 1px solid rgba(255, 182, 193, 0.2);
         }
-        /* 音乐按钮 */
-        .music-link { 
-            display: inline-block; 
-            padding: 8px 16px; 
-            background-color: rgba(255, 182, 193, 0.8); 
-            text-decoration: none; 
-            border-radius: 20px; 
-            font-size: 16px; 
-            margin-top: 10px; 
-            transition: all 0.3s ease;
-        }
-        .music-link:hover {
-            box-shadow: 0 0 10px #FFB6C1;
-            transform: scale(1.05);
-        }
-        /* 点击特效样式 */
         .click-effect {
             position: fixed;
             pointer-events: none;
@@ -311,7 +269,6 @@
             0% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(0); }
         }
-        /* 输入框和按钮样式 */
         input {
             padding: 10px;
             width: 250px;
@@ -319,7 +276,6 @@
             border-radius: 4px;
             margin: 15px 8px 0 0;
             color: #333;
-            /* 优化10：输入框聚焦发光 */
             transition: box-shadow 0.3s ease;
         }
         input:focus {
@@ -370,22 +326,18 @@
         a:hover {
             text-shadow: 0 0 8px #FFB6C1;
         }
-        /* 音乐播放器样式 - 新增音乐名称显示 */
         .music-player {
-            position: fixed; 
-            top: 60px; 
-            right: 20px; 
+            position: fixed;
+            top: 60px;
+            right: 20px;
             z-index: 999;
             background: rgba(0,0,0,0.7);
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #FFB6C1;
             text-align: center;
-            /* 优化11：音乐播放器毛玻璃+发光 */
             backdrop-filter: blur(5px);
             box-shadow: 0 0 8px rgba(255, 182, 193, 0.4);
-            /* 新增：拖动时鼠标样式 */
-            cursor: move;
         }
         .music-name {
             font-size: 14px;
@@ -398,21 +350,18 @@
         }
         .music-player audio {
             width: 200px;
-            /* 优化12：音频控件样式适配 */
-            filter: hue-rotate(320deg); /* 让音频控件偏粉色 */
-            /* 新增：防止音频控件阻止拖动 */
-            pointer-events: auto;
+            filter: hue-rotate(320deg);
         }
     </style>
 </head>
 <body>
-    <!-- 音乐播放器 - 新增音乐名称 -->
-    <div class="music-player" id="musicPlayer">
+    <!-- 音乐播放器 - 移除 muted 属性 -->
+    <div class="music-player">
         <div class="music-name" id="musicName">难生恨 - 韦越&秋成</div>
-        <audio controls loop autoplay muted>
+        <audio controls loop autoplay id="bgMusic">
             <source src="https://d5.qyshare.store/s/TBVWTxUNFQNWBKFCVA50FUVgKFCVA50EGgQPVKFCVA508aKFCVA50wBUKFCVA50hpWKFCVA50wMKFCVA50GgcOVQEEBgZTBKFCVA50MBUhUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGDxhRU1UGB1YHKFCVA50BoGKFCVA50KFCVA50VWGgMCVgMaVVUCUhoEUQJVVKFCVA50ZSDwBWDgIZVV5ZFRsVVlQVDRUDDwJUU1MKFCVA50DxoBUwUEGgNWKFCVA50gKFCVA50aVQEGVRoHBQMOBKFCVA508DBKFCVA50NRD1YVGxVZVlpSFQ0V3q2J0KOo0bafFxoX0JOL34G9a0IHBwUB0JC80b-nGVZWVBUbFVRYWUNSWUNjTkdSFQ0VVkJTXlgYVlZUFRsVVlMVDRVWUw5WUgKFCVA50FBxpTKFCVA50VJSGgMCVVEaVlMFUhoEDlNUKFCVA50wYPDg4ODlQVSg==" type="audio/mpeg">
             你的浏览器不支持音频播放
-         
+        
     </div>
 
     <!-- 公告弹窗 -->
@@ -423,6 +372,7 @@
             1.请合理运用此网页 <br>
             2.此网页仅用于宇秋学习参考<br>
             3.有什么事请联系群主<br>
+            注宇秋是最帅的<br>
         </div>
         <div class="notice-countdown" id="countdownText">倒计时：3秒后可操作</div>
         <div class="notice-btns">
@@ -445,35 +395,22 @@
     </div>
     <div class="petal-container" id="petalContainer"></div>
     <div class="content" id="mainContent">
-        <!-- 页面显示时间的容器 -->
         <div id="currentTime"></div>
-
-        <!-- 头像HTML -->
-        <img src="IMG_4068_edit_229293668334280.jpg" class="avatar" alt="头像">
-
-        <div class="desc">温馨提示:设置深色模式更好看哦</div>
-        <div class="desc">建议使用via浏览器打开此网页</div>
-        　　　　　　　　　　　　　　　　　
+        <img src="https://d6.qyshare.store/s/TBVWTxUNFQQFVKFCVA50EHBQQKFCVA50GlFUVlYaKFCVA501EKFCVA50KFCVA50BoOKFCVA501MDGgMEBwNSUQEDKFCVA50wJWVRUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGDhgDBQMKFCVA50VKFCVA505UUhoOVgYKFCVA50GgMEUwKFCVA50aVVRVVRpVBKFCVA50FTKFCVA50FFUKFCVA50gUDKFCVA50FUZVV5ZFRsVVlQVDRVTVKFCVA50MFKFCVA50VQFKFCVA50BoCVQ4PGgMFUgMaDlZTVhpWKFCVA50gNTUVQCKFCVA50lYDVlMVGxVZVlpSFQ0VfnpwaKFCVA50MHKFCVA50Q9oUlNeQ2gFBQ4FDgQBKFCVA50Q8EBKFCVA50MFDwcZXUdQFRsVVFhZQ1JZQ2NOR1IVDRVeWlZQUhhdR1JQFRsVVlMVDRUKFCVA50UVEPVKFCVA50JSKFCVA50BoPUgYPGgMCVgQaVgVTUhoOKFCVA501FWKFCVA50g9TKFCVA50KFCVA50VRBwKFCVA50VSg==" class="avatar" alt="头像">
+        <div class="desc">宇秋让人人体验科技的快乐</div>
+        　　　　　　　
         <div class="title">宇秋正版成功❤️❤️❤️</div>
         <div class="desc"><p>反馈：<a href="mailto:740912168@qq.com">点我发送邮件</a></p></div>
-        <div class="desc">让人人体验科技的快乐</div>
-        <div class="desc">🥵群主可教上飞机(不要米)🥵</div>
-        <div class="desc">q群号:1036222312</div>
-        <div class="desc">TG:yqnbnb688</div>
+        <div class="desc">Q群：1036222312 | TG：yqnbnb688</div>
         <div class="desc">需要输入神秘代码</div>
         <div class="desc">(每个神秘代码都不同)</div>
-
-        <!-- 卡密验证区域 -->
         <input type="text" id="inputText" placeholder="请输入神秘代码" autocomplete="off">
         <button onclick="checkAndJump()" id="submitBtn">获取</button>
         <div id="error"></div>
         <div id="countTips"></div>
-
-        <!-- 社交链接 -->
         <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
         <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a>
     </div>
-    <div class="bottom-bar">宇秋验证界面 © 2025</div>
 
     <script>
         // 公告弹窗逻辑
@@ -489,9 +426,26 @@
         const officialBtn = document.getElementById('officialBtn');
         const replaceBtn = document.getElementById('replaceBtn');
 
-        // 正式版和替登版下载链接（可自行修改）
+        // 正式版和替登版下载链接
         const officialUrl = "https://d6.qyshare.store/s/TBVWTxUNFQEBKFCVA50lMGVQBWGlNRUgEaKFCVA50wKFCVA50FBRoOKFCVA50KFCVA50EFGgIDBFQHKFCVA50FMOKFCVA50KFCVA50QCKFCVA50BUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGBxgHVVIDBwEHKFCVA50hoHUgVVGgMOVgQaVQZRBxoPB1RVVFYPUwYHBgMZVV5ZFRsVVlQVDRVRUw5UVFRTDxoPDg8FGgNTKFCVA50g4aVgQEKFCVA50hpTKFCVA50w9VBVYEBwZWKFCVA50wQVGxVZVlpSFQ0VY1JbUlBFVlpoBgUZBRkGBxlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50g5SBlIFKFCVA50VIaKFCVA50KFCVA50EBDxoDVKFCVA50MDGg5WBQcaUlUOKFCVA501NUUg4GKFCVA50wUGFUo=";
         const replaceUrl = "https://d5.qyshare.store/s/TBVWTxUNFQdSDlMEU1ZTGlJVUVUaKFCVA50wBWKFCVA50BoPKFCVA50gFWGgBWBFEPUQRRKFCVA50FNSBBUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGKFCVA50hgPVVYPVVEOBhpVBgUDGgNSUgEaVQNSVRoOBg5WBw4OKFCVA501QOBFMZVV5ZFRsVVlQVDRVSUwEOB1EEBRpRKFCVA50gQBGgNRKFCVA50lEaD1NRVhoEKFCVA501RSKFCVA50FQPBwcKFCVA50BVQVGxVZVlpSFQ0VdUNYXGgKFCVA50GQUZDhlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VVgdVVg4OVg8aBlJTBBoDDwJWGlVSBlMaVlYOBFRUUlQPB1RVFUo=";
+
+        // 音频自动播放核心修复：监听页面任意交互触发播放
+        const bgMusic = document.getElementById('bgMusic');
+        // 尝试自动播放，失败则监听用户交互触发
+        function initAudioPlay() {
+            bgMusic.play().catch(err => {
+                // 监听页面点击/触摸事件，触发播放
+                document.addEventListener('click', () => {
+                    bgMusic.play();
+                }, { once: true });
+                document.addEventListener('touchstart', () => {
+                    bgMusic.play();
+                }, { once: true });
+            });
+        }
+        // 页面加载后立即初始化音频
+        window.addEventListener('DOMContentLoaded', initAudioPlay);
 
         // 倒计时函数
         const countdownTimer = setInterval(() => {
@@ -502,9 +456,6 @@
                 countdownText.textContent = "可进行操作";
                 agreeBtn.disabled = false;
                 closeBtn.disabled = false;
-                // 自动播放取消静音 - 解决浏览器自动播放限制
-                const audio = document.querySelector('audio');
-                audio.muted = false;
             }
         }, 1000);
 
@@ -512,12 +463,13 @@
         agreeBtn.addEventListener('click', () => {
             noticeModal.style.display = 'none';
             mainContent.style.display = 'flex';
+            // 点击同意时再次尝试播放音频
+            bgMusic.play();
         });
 
         // 关闭按钮：退出网站
         closeBtn.addEventListener('click', () => {
             window.close();
-            // 部分浏览器不支持window.close()，补充跳转空白页
             window.location.href = 'about:blank';
         });
 
@@ -547,7 +499,7 @@
         showTime();
         setInterval(showTime, 1000);
 
-        // ===== 可直接修改的配置项 =====
+        // 可直接修改的配置项
         const textConfigMap = {
             "yqtg666": {
                 tip: "您输入的是获取纸飞机的代码！"
@@ -564,7 +516,6 @@
         const wrongTipText = "输入的文字无效！";
         const maxAttempts = 5;
         const baseWaitTime = 30 * 1000;
-        // =============================
 
         let errorCount = 0;
         let waitMultiplier = 1;
@@ -592,7 +543,6 @@
             if (textConfigMap.hasOwnProperty(input)) {
                 const { tip, url } = textConfigMap[input] || {};
                 alert(tip);
-                // 单独处理yqtg666，显示下载选项弹窗
                 if (input === "yqtg666") {
                     downloadModal.style.display = 'block';
                 } else if (url) {
@@ -643,10 +593,9 @@
             if (e.key === "Enter") checkAndJump();
         });
 
-        // 花瓣飘落逻辑（优化：花瓣颜色随机）
+        // 花瓣飘落逻辑
         const petalContainer = document.getElementById('petalContainer');
         const petalCount = 50;
-        // 粉色系配色表
         const petalColors = [
             'rgba(255, 182, 193, 0.8)',
             'rgba(255, 192, 203, 0.8)',
@@ -665,7 +614,6 @@
             const rotate = Math.random() * 360;
             const delay = Math.random() * 5;
             const duration = 8 + Math.random() * 10;
-            // 随机选择花瓣颜色
             const randomColor = petalColors[Math.floor(Math.random() * petalColors.length)];
             petal.style.backgroundColor = randomColor;
             petal.style.left = `${left}%`;
@@ -677,7 +625,7 @@
             petalContainer.appendChild(petal);
         }
 
-        // 点击特效逻辑（优化：点击特效颜色和花瓣呼应）
+        // 点击特效逻辑
         document.addEventListener('click', function(e) {
             const effect = document.createElement('div');
             effect.className = 'click-effect';
@@ -695,47 +643,6 @@
                 effect.remove();
             }, 1000);
         });
-
-        // ========== 新增：音乐播放器拖动逻辑 ==========
-        const musicPlayer = document.getElementById('musicPlayer');
-        let isDragging = false;
-        let offsetX, offsetY;
-
-        // 鼠标按下时记录初始位置
-        musicPlayer.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            // 计算鼠标相对播放器的偏移量
-            offsetX = e.clientX - musicPlayer.getBoundingClientRect().left;
-            offsetY = e.clientY - musicPlayer.getBoundingClientRect().top;
-            // 拖动时鼠标样式
-            musicPlayer.style.cursor = 'grabbing';
-        });
-
-        // 鼠标移动时更新播放器位置
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            // 计算新位置（限制在可视区内）
-            const x = e.clientX - offsetX;
-            const y = e.clientY - offsetY;
-            // 限制不超出浏览器可视区
-            const maxX = window.innerWidth - musicPlayer.offsetWidth;
-            const maxY = window.innerHeight - musicPlayer.offsetHeight;
-            const finalX = Math.max(0, Math.min(x, maxX));
-            const finalY = Math.max(0, Math.min(y, maxY));
-            // 设置播放器位置
-            musicPlayer.style.left = `${finalX}px`;
-            musicPlayer.style.top = `${finalY}px`;
-            // 清除原有right属性，避免冲突
-            musicPlayer.style.right = 'auto';
-        });
-
-        // 鼠标松开时停止拖动
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                musicPlayer.style.cursor = 'move';
-            }
-        });
     </script>
 </body>
-                </html>
+</html>
