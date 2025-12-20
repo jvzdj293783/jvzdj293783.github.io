@@ -186,7 +186,7 @@
             height: 80px;
             border-radius: 50%;
             border: 2px solid #FFB6C1;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: rotate 10s linear infinite;
             box-shadow: 0 0 10px rgba(255, 182, 193, 0.6);
             transition: animation 0.5s ease;
@@ -269,19 +269,51 @@
             0% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(0); }
         }
-        input {
-            padding: 10px;
+        /* 输入框炫酷样式 - 新增聚焦动画 */
+        .input-wrapper {
+            position: relative;
+            margin: 15px 0;
             width: 250px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 15px 8px 0 0;
-            color: #333;
-            transition: box-shadow 0.3s ease;
         }
-        input:focus {
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #FFB6C1;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
             outline: none;
-            box-shadow: 0 0 8px #FFB6C1;
-            border-color: #FFB6C1;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+        }
+        /* 聚焦状态 */
+        input:focus {
+            border-color: #ff8fa3;
+            box-shadow: 0 0 15px #FFB6C1, 0 0 25px rgba(255, 182, 193, 0.2);
+            transform: translateY(-2px);
+        }
+        /* 输入框发光边框动画 */
+        .input-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 8px;
+            background: rgba(255, 182, 193, 0.1);
+            transition: all 0.4s ease;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+        }
+        input:focus + .input-wrapper::after,
+        input:focus ~ .input-wrapper::after {
+            width: 105%;
+            height: 120%;
+        }
+        input::placeholder {
+            color: #ffb6c180;
         }
         button {
             padding: 10px 20px;
@@ -352,6 +384,106 @@
             width: 200px;
             filter: hue-rotate(320deg);
         }
+        /* 视频按钮样式 - 头像下方 + 炫酷悬浮动画 */
+        .video-btn {
+            position: relative; 
+            z-index: 2;
+            margin-bottom: 20px; 
+            padding: 8px 15px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(50,50,50,0.5) 100%);
+            border: 1px solid #FFB6C1;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+            text-shadow: 0 0 5px #FFB6C1;
+            overflow: hidden;
+        }
+        .video-btn:hover {
+            transform: scale(1.1);
+            border-color: #ff8fa3;
+            box-shadow: 0 0 15px #FFB6C1, 0 0 25px rgba(255, 182, 193, 0.3);
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(80,20,30,0.6) 100%);
+        }
+        .video-btn::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 182, 193, 0.2),
+                transparent
+            );
+            transform: rotate(30deg);
+            animation: shine 2s infinite linear;
+        }
+        @keyframes shine {
+            0% { transform: rotate(30deg) translateX(-100%); }
+            100% { transform: rotate(30deg) translateX(100%); }
+        }
+        /* 视频弹窗样式 - 渐变动画 */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #FFB6C1;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .video-modal.active .video-modal-content {
+            transform: scale(1);
+        }
+        .close-video-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ff0000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .close-video-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #ff0000;
+        }
+        .video-modal video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -361,8 +493,7 @@
         <audio controls loop autoplay id="bgMusic">
             <source src="https://d5.qyshare.store/s/TBVWTxUNFQNWBKFCVA50FUVgKFCVA50EGgQPVKFCVA508aKFCVA50wBUKFCVA50hpWKFCVA50wMKFCVA50GgcOVQEEBgZTBKFCVA50MBUhUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGDxhRU1UGB1YHKFCVA50BoGKFCVA50KFCVA50VWGgMCVgMaVVUCUhoEUQJVVKFCVA50ZSDwBWDgIZVV5ZFRsVVlQVDRUDDwJUU1MKFCVA50DxoBUwUEGgNWKFCVA50gKFCVA50aVQEGVRoHBQMOBKFCVA508DBKFCVA50NRD1YVGxVZVlpSFQ0V3q2J0KOo0bafFxoX0JOL34G9a0IHBwUB0JC80b-nGVZWVBUbFVRYWUNSWUNjTkdSFQ0VVkJTXlgYVlZUFRsVVlMVDRVWUw5WUgKFCVA50FBxpTKFCVA50VJSGgMCVVEaVlMFUhoEDlNUKFCVA50wYPDg4ODlQVSg==" type="audio/mpeg">
             你的浏览器不支持音频播放
-        
-    </div>
+        </div>
 
     <!-- 公告弹窗 -->
     <div class="notice-modal" id="noticeModal">
@@ -397,6 +528,8 @@
     <div class="content" id="mainContent">
         <div id="currentTime"></div>
         <img src="https://d6.qyshare.store/s/TBVWTxUNFQQFVKFCVA50EHBQQKFCVA50GlFUVlYaKFCVA501EKFCVA50KFCVA50BoOKFCVA501MDGgMEBwNSUQEDKFCVA50wJWVRUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGDhgDBQMKFCVA50VKFCVA505UUhoOVgYKFCVA50GgMEUwKFCVA50aVVRVVRpVBKFCVA50FTKFCVA50FFUKFCVA50gUDKFCVA50FUZVV5ZFRsVVlQVDRVTVKFCVA50MFKFCVA50VQFKFCVA50BoCVQ4PGgMFUgMaDlZTVhpWKFCVA50gNTUVQCKFCVA50lYDVlMVGxVZVlpSFQ0VfnpwaKFCVA50MHKFCVA50Q9oUlNeQ2gFBQ4FDgQBKFCVA50Q8EBKFCVA50MFDwcZXUdQFRsVVFhZQ1JZQ2NOR1IVDRVeWlZQUhhdR1JQFRsVVlMVDRUKFCVA50UVEPVKFCVA50JSKFCVA50BoPUgYPGgMCVgQaVgVTUhoOKFCVA501FWKFCVA50g9TKFCVA50KFCVA50VRBwKFCVA50VSg==" class="avatar" alt="头像">
+        <!-- 视频按钮移到头像下方 -->
+        <button class="video-btn" id="openVideoBtn">播放视频</button>
         <div class="desc">宇秋让人人体验科技的快乐</div>
         　　　　　　　
         <div class="title">宇秋正版成功❤️❤️❤️</div>
@@ -404,12 +537,26 @@
         <div class="desc">Q群：1036222312 | TG：yqnbnb688</div>
         <div class="desc">需要输入神秘代码</div>
         <div class="desc">(每个神秘代码都不同)</div>
-        <input type="text" id="inputText" placeholder="请输入神秘代码" autocomplete="off">
+        <!-- 输入框外层容器，用于实现发光动画 -->
+        <div class="input-wrapper">
+            <input type="text" id="inputText" placeholder="请输入神秘代码" autocomplete="off">
+        </div>
         <button onclick="checkAndJump()" id="submitBtn">获取</button>
         <div id="error"></div>
         <div id="countTips"></div>
         <a href="https://t.me/yqnbnb688" target="_blank">点我加TG频道😁(请搭配vpn)</a>
         <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ayDDRdLOEvYy1RN9pe0v6LNUuQDPG_et&authKey=OWsbCm48tvaZNJajEjDix%2BD2xdlCeILLze967XL%2FxcsDWQoD7GZeHjak1EdMe1qo&noverify=0&group_code=1036222312" target="_blank">点我加q群😁😁😁</a>
+    </div>
+
+    <!-- 视频弹窗 -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="close-video-btn" id="closeVideoBtn">×</button>
+            <video controls id="modalVideo">
+                <source src="https://d6.qyshare.store/s/TBVWTxUNFQKFCVA50DUlNTKFCVA50wJVGlNWVVQaKFCVA501IEKFCVA50xpVBwcGGg8BDlNVUgdSUVEOBBUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgFBxgKFCVA50VlYHBwQGBBoEKFCVA50KFCVA50JVGgMED1UaVgYHDxoKFCVA50KFCVA501YHD1IFUQ8GBgUZVV5ZFRsVVlQVDRVWKFCVA50QFTBKFCVA50UOKFCVA50xoOD1IOGgMODw4aD1VRBxoGKFCVA50KFCVA50YBBwdVBKFCVA50KFCVA50FUwIVGxVZVlpSFQ0VYV5TUlhoBgKFCVA50BKFCVA50gUPKFCVA50g8OBw8FKFCVA50hlaRwMVGxVUWFlDUllDY05HUhUNFUFeU1JYGFpHKFCVA50xUbFVZTFQ0VUgNWVQIBBlQaUwICUxoDKFCVA50gYOGlYPDlIaKFCVA50FIPBw8PDwNVKFCVA50VMBFUo=" type="video/mp4">
+                你的浏览器不支持视频播放
+            </video>
+        </div>
     </div>
 
     <script>
@@ -432,10 +579,8 @@
 
         // 音频自动播放核心修复：监听页面任意交互触发播放
         const bgMusic = document.getElementById('bgMusic');
-        // 尝试自动播放，失败则监听用户交互触发
         function initAudioPlay() {
             bgMusic.play().catch(err => {
-                // 监听页面点击/触摸事件，触发播放
                 document.addEventListener('click', () => {
                     bgMusic.play();
                 }, { once: true });
@@ -444,7 +589,6 @@
                 }, { once: true });
             });
         }
-        // 页面加载后立即初始化音频
         window.addEventListener('DOMContentLoaded', initAudioPlay);
 
         // 倒计时函数
@@ -463,7 +607,6 @@
         agreeBtn.addEventListener('click', () => {
             noticeModal.style.display = 'none';
             mainContent.style.display = 'flex';
-            // 点击同意时再次尝试播放音频
             bgMusic.play();
         });
 
@@ -643,6 +786,43 @@
                 effect.remove();
             }, 1000);
         });
+
+        // 视频弹窗逻辑 - 动画控制
+        const openVideoBtn = document.getElementById('openVideoBtn');
+        const videoModal = document.getElementById('videoModal');
+        const closeVideoBtn = document.getElementById('closeVideoBtn');
+        const modalVideo = document.getElementById('modalVideo');
+
+        // 打开视频弹窗：暂停音乐 + 激活动画
+        openVideoBtn.addEventListener('click', () => {
+            videoModal.classList.add('active');
+            bgMusic.pause();
+            modalVideo.play().catch(err => console.log('视频自动播放失败：', err));
+        });
+
+        // 关闭视频弹窗：恢复音乐 + 关闭动画
+        function closeVideoAndResumeMusic() {
+            videoModal.classList.remove('active');
+            modalVideo.pause();
+            setTimeout(() => {
+                bgMusic.play();
+            }, 400);
+        }
+
+        // 关闭按钮触发
+        closeVideoBtn.addEventListener('click', closeVideoAndResumeMusic);
+
+        // 点击弹窗外层触发
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                closeVideoAndResumeMusic();
+            }
+        });
+
+        // 视频播放结束后自动恢复音乐
+        modalVideo.addEventListener('ended', () => {
+            closeVideoAndResumeMusic();
+        });
     </script>
 </body>
-</html>
+    </html>
