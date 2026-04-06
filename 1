@@ -1,0 +1,55 @@
+-- Rlocal Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+local flySpeed = 50
+local flying = false
+local keys = {w = 0, a = 0, s = 0, d = 0}
+
+-- 起飞/降落快捷键：空格
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.Space then
+        flying = not flying
+        Humanoid:ChangeState(flying and Enum.HumanoidStateType.Physics or Enum.HumanoidStateType.Landed)
+    end
+end)
+
+-- 方向控制
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.W then keys.w = 1 end
+    if input.KeyCode == Enum.KeyCode.S then keys.s = 1 end
+    if input.KeyCode == Enum.KeyCode.A then keys.a = 1 end
+    if input.KeyCode == Enum.KeyCode.D then keys.d = 1 end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.W then keys.w = 0 end
+    if input.KeyCode == Enum.KeyCode.S then keys.s = 0 end
+    if input.KeyCode == Enum.KeyCode.A then keys.a = 0 end
+    if input.KeyCode == Enum.KeyCode.D then keys.d = 0 end
+end)
+
+-- 飞行循环
+game:GetService("RunService").Stepped:Connect(function()
+    if flying and RootPart then
+        local cam = game.Workspace.CurrentCamera
+        local direction = Vector3.new(
+            (keys.d - keys.a),
+            0,
+            (keys.s - keys.w)
+        ).Unit
+
+        if direction.Magnitude > 0 then
+            direction = cam.CFrame:VectorToWorldSpace(direction)
+            direction = Vector3.new(direction.X, 0, direction.Z).Unit
+        end
+
+        RootPart.Velocity = direction * flySpeed
+        if flying then
+            RootPart.Velocity = Vector3.new(RootPart.Velocity.X, 0, RootPart.Velocity.Z)
+        end
+    end
+end)
+
