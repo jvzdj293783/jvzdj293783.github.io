@@ -1,0 +1,75 @@
+local Player = game:GetService("Players").LocalPlayer
+local RS = game:GetService("RunService")
+
+local noclip = false
+local minimized = false
+
+-- 窗口
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = Player.PlayerGui
+
+local Main = Instance.new("Frame")
+Main.Size = UDim2.new(0,170,0,100)
+Main.Position = UDim2.new(0.5,-85,0.5,-50)
+Main.BackgroundColor3 = Color3.new(0.1,0.1,0.14)
+Main.Active = true
+Main.Draggable = true
+Main.Parent = ScreenGui
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,0,0,30)
+Title.BackgroundColor3 = Color3.new(0.2,0.6,1)
+Title.Text = "穿墙助手"
+Title.TextColor3 = Color3.new(1,1,1)
+Title.Parent = Main
+
+local MinBtn = Instance.new("TextButton")
+MinBtn.Size = UDim2.new(0,30,0,30)
+MinBtn.Position = UDim2.new(1,-30,0,0)
+MinBtn.BackgroundColor3 = Color3.new(0.9,0.2,0.2)
+MinBtn.Text = "-"
+MinBtn.TextColor3 = Color3.new(1,1,1)
+MinBtn.Parent = Title
+
+local ToggleBtn = Instance.new("TextButton")
+ToggleBtn.Size = UDim2.new(0.9,0,0,50)
+ToggleBtn.Position = UDim2.new(0.05,0,0.35,0)
+ToggleBtn.BackgroundColor3 = Color3.new(0,0.8,0.3)
+ToggleBtn.Text = "开启穿墙"
+ToggleBtn.TextColor3 = Color3.new(1,1,1)
+ToggleBtn.TextSize = 18
+ToggleBtn.Parent = Main
+
+-- 最小化
+MinBtn.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    if minimized then
+        Main.Size = UDim2.new(0,100,0,30)
+        ToggleBtn.Visible = false
+        MinBtn.Text = "+"
+    else
+        Main.Size = UDim2.new(0,170,0,100)
+        ToggleBtn.Visible = true
+        MinBtn.Text = "-"
+    end
+end)
+
+-- 开关
+ToggleBtn.MouseButton1Click:Connect(function()
+    noclip = not noclip
+    ToggleBtn.Text = noclip and "关闭穿墙" or "开启穿墙"
+    ToggleBtn.BackgroundColor3 = noclip and Color3.new(0.9,0.2,0.2) or Color3.new(0,0.8,0.3)
+end)
+
+-- 穿墙（真能穿）
+RS.Heartbeat:Connect(function()
+    local char = Player.Character
+    if not char then return end
+
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.CanCollide = not noclip
+        end
+    end
+end)
+
