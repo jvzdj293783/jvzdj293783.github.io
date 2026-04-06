@@ -19,7 +19,7 @@ Main.Parent = ScreenGui
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1,0,0,30)
 Title.BackgroundColor3 = Color3.new(0.2,0.6,1)
-Title.Text = "穿墙助手"
+Title.Text = "宇秋穿墙"
 Title.TextColor3 = Color3.new(1,1,1)
 Title.Parent = Main
 
