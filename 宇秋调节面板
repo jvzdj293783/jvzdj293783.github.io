@@ -13,6 +13,7 @@ local BlackBg = Instance.new("Frame")
 BlackBg.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
 BlackBg.Size = UDim2.new(1, 0, 1, 0)
 BlackBg.Position = UDim2.new(0, 0, 0, 0)
+BlackBg.BackgroundTransparency = 1
 BlackBg.Parent = BootGui
 
 local MainPanel = Instance.new("Frame")
@@ -70,7 +71,7 @@ StartBtn.TextSize = 22
 StartBtn.Font = Enum.Font.GothamBold
 StartBtn.Parent = MainPanel
 
--- TG 按钮（修复版）
+-- TG
 local TgBtn = Instance.new("TextButton")
 TgBtn.BackgroundColor3 = Color3.fromRGB(40, 120, 200)
 TgBtn.Size = UDim2.new(0, 200, 0, 38)
@@ -83,12 +84,12 @@ TgBtn.Parent = MainPanel
 TgBtn.MouseButton1Click:Connect(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "TG频道",
-        Text = "https://t.me/yqnbnb688",
+        Text = "@yqnbnb688",
         Duration = 5
     })
 end)
 
--- QQ群 按钮（修复版）
+-- QQ
 local QqBtn = Instance.new("TextButton")
 QqBtn.BackgroundColor3 = Color3.fromRGB(20, 160, 80)
 QqBtn.Size = UDim2.new(0, 200, 0, 38)
@@ -100,510 +101,441 @@ QqBtn.Parent = MainPanel
 
 QqBtn.MouseButton1Click:Connect(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "QQ群链接",
-        Text = "141288279",
+        Title = "QQ群",
+        Text = "QQ群：141288279",
         Duration = 5
     })
 end)
 
--- 启动逻辑
 StartBtn.MouseButton1Click:Connect(function()
-    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 220, 0, 46)}):Play()
-    task.wait(0.12)
-    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 240, 0, 50)}):Play()
-    TweenService:Create(Bar, TweenInfo.new(0.8), {Size = UDim2.new(1, 0, 1, 0)}):Play()
-    task.wait(0.9)
     BootGui:Destroy()
 
-    -- 下面是你原来的功能代码，我只修了跳跃
-local Player = game:GetService("Players").LocalPlayer
-local UIS = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
+    local Player = game:GetService("Players").LocalPlayer
+    local UIS = game:GetService("UserInputService")
+    local RunService = game:GetService("RunService")
+    local Players = game:GetService("Players")
 
-wait(0.1)
+    wait(0.1)
 
-local function setupHeadLabel()
-    local char = Player.Character or Player.CharacterAdded:Wait()
-    local head = char:WaitForChild("Head")
-    local bill = Instance.new("BillboardGui")
-    bill.Name = "HeadLabel"
-    bill.Adornee = head
-    bill.Parent = char
-    bill.Size = UDim2.new(0, 100, 0, 30)
-    bill.StudsOffset = Vector3.new(0, 2, 0)
-    bill.AlwaysOnTop = true
-    bill.MaxDistance = 100
-    local bg = Instance.new("Frame")
-    bg.Size = UDim2.new(1,0,1,0)
-    bg.BackgroundColor3 = Color3.new(0.1,0.1,0.1)
-    bg.BackgroundTransparency = 0.3
-    bg.Parent = bill
-    local text = Instance.new("TextLabel")
-    text.Size = UDim2.new(1,0,1,0)
-    text.BackgroundTransparency = 1
-    text.Text = Player.Name.." | 正常"
-    text.TextColor3 = Color3.new(1,1,1)
-    text.TextSize = 14
-    text.Parent = bg
-    RunService.Heartbeat:Connect(function()
-        local state = "正常"
-        if enabled then state = "加速" end
-        if isAscending then state = "飞行" end
-        if rotateEnabled then state = "旋转" end
-        text.Text = Player.Name.." | "..state
-    end)
-end
+    local platform = nil
+    local isAscending = false
 
-Player.CharacterAdded:Connect(setupHeadLabel)
-setupHeadLabel()
-
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = Player.PlayerGui
-ScreenGui.ResetOnSpawn = false
-ScreenGui.IgnoreGuiInset = true
-
-local Main = Instance.new("Frame")
-Main.Size = UDim2.new(0,250,0,275)
-Main.Position = UDim2.new(0.05,0,0.1,0)
-Main.BackgroundColor3 = Color3.new(0.12,0.12,0.12)
-Main.Parent = ScreenGui
-
-local Top = Instance.new("Frame")
-Top.Size = UDim2.new(1,0,0,24)
-Top.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
-Top.Parent = Main
-
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(0,100,0,24)
-Title.Position = UDim2.new(0,5,0,0)
-Title.BackgroundTransparency = 1
-Title.Text = "宇秋调节面板"
-Title.TextColor3 = Color3.new(1,1,1)
-Title.TextSize = 14
-Title.Font = Enum.Font.GothamBold
-Title.Parent = Top
-
-local Close = Instance.new("TextButton")
-Close.Size = UDim2.new(0,24,0,24)
-Close.Position = UDim2.new(1,-24,0,0)
-Close.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
-Close.Text = "×"
-Close.TextColor3 = Color3.new(1,1,1)
-Close.Parent = Top
-
-local Mini = Instance.new("TextButton")
-Mini.Size = UDim2.new(0,24,0,24)
-Mini.Position = UDim2.new(1,-48,0,0)
-Mini.BackgroundColor3 = Color3.new(0.2,0.4,0.7)
-Mini.Text = "-"
-Mini.TextColor3 = Color3.new(1,1,1)
-Mini.Parent = Top
-
-local Toggle = Instance.new("TextButton")
-Toggle.Size = UDim2.new(0,70,0,30)
-Toggle.Position = UDim2.new(0,5,0,30)
-Toggle.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
-Toggle.Text = "OFF"
-Toggle.TextColor3 = Color3.new(1,1,1)
-Toggle.Parent = Main
-
-local Label = Instance.new("TextLabel")
-Label.Size = UDim2.new(0,75,0,30)
-Label.Position = UDim2.new(0,80,0,30)
-Label.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
-Label.Text = "速度: 1"
-Label.TextColor3 = Color3.new(1,1,1)
-Label.Parent = Main
-
-local Plus = Instance.new("TextButton")
-Plus.Size = UDim2.new(0,70,0,30)
-Plus.Position = UDim2.new(0,5,0,65)
-Plus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
-Plus.Text = "+"
-Plus.TextColor3 = Color3.new(1,1,1)
-Plus.Parent = Main
-
-local Minus = Instance.new("TextButton")
-Minus.Size = UDim2.new(0,70,0,30)
-Minus.Position = UDim2.new(0,80,0,65)
-Minus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
-Minus.Text = "-"
-Minus.TextColor3 = Color3.new(1,1,1)
-Minus.Parent = Main
-
-local JumpLabel = Instance.new("TextLabel")
-JumpLabel.Size = UDim2.new(0,75,0,30)
-JumpLabel.Position = UDim2.new(0,5,0,100)
-JumpLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
-JumpLabel.Text = "跳跃: 50"
-JumpLabel.TextColor3 = Color3.new(1,1,1)
-JumpLabel.Parent = Main
-
-local JumpUp = Instance.new("TextButton")
-JumpUp.Size = UDim2.new(0,32,0,30)
-JumpUp.Position = UDim2.new(0,82,0,100)
-JumpUp.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
-JumpUp.Text = "+跳"
-JumpUp.TextColor3 = Color3.new(1,1,1)
-JumpUp.Parent = Main
-
-local JumpDown = Instance.new("TextButton")
-JumpDown.Size = UDim2.new(0,32,0,30)
-JumpDown.Position = UDim2.new(0,118,0,100)
-JumpDown.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
-JumpDown.Text = "-跳"
-JumpDown.TextColor3 = Color3.new(1,1,1)
-JumpDown.Parent = Main
-
-local FlyLabel = Instance.new("TextLabel")
-FlyLabel.Size = UDim2.new(0,75,0,30)
-FlyLabel.Position = UDim2.new(0,5,0,135)
-FlyLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
-FlyLabel.Text = "飞行: 80"
-FlyLabel.TextColor3 = Color3.new(1,1,1)
-FlyLabel.Parent = Main
-
-local FlyPlus = Instance.new("TextButton")
-FlyPlus.Size = UDim2.new(0,32,0,30)
-FlyPlus.Position = UDim2.new(0,82,0,135)
-FlyPlus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
-FlyPlus.Text = "+飞"
-FlyPlus.TextColor3 = Color3.new(1,1,1)
-FlyPlus.Parent = Main
-
-local FlyMinus = Instance.new("TextButton")
-FlyMinus.Size = UDim2.new(0,32,0,30)
-FlyMinus.Position = UDim2.new(0,118,0,135)
-FlyMinus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
-FlyMinus.Text = "-飞"
-FlyMinus.TextColor3 = Color3.new(1,1,1)
-FlyMinus.Parent = Main
-
-local RotateToggle = Instance.new("TextButton")
-RotateToggle.Size = UDim2.new(0,70,0,30)
-RotateToggle.Position = UDim2.new(0,5,0,170)
-RotateToggle.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
-RotateToggle.Text = "旋转:OFF"
-RotateToggle.TextColor3 = Color3.new(1,1,1)
-RotateToggle.Parent = Main
-
-local RotateLabel = Instance.new("TextLabel")
-RotateLabel.Size = UDim2.new(0,75,0,30)
-RotateLabel.Position = UDim2.new(0,80,0,170)
-RotateLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
-RotateLabel.Text = "转速: 3"
-RotateLabel.TextColor3 = Color3.new(1,1,1)
-RotateLabel.Parent = Main
-
-local RotatePlus = Instance.new("TextButton")
-RotatePlus.Size = UDim2.new(0,32,0,30)
-RotatePlus.Position = UDim2.new(0,82,0,205)
-RotatePlus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
-RotatePlus.Text = "+旋"
-RotatePlus.TextColor3 = Color3.new(1,1,1)
-RotatePlus.Parent = Main
-
-local RotateMinus = Instance.new("TextButton")
-RotateMinus.Size = UDim2.new(0,32,0,30)
-RotateMinus.Position = UDim2.new(0,118,0,205)
-RotateMinus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
-RotateMinus.Text = "-旋"
-RotateMinus.TextColor3 = Color3.new(1,1,1)
-RotateMinus.Parent = Main
-
-local UpBtn = Instance.new("TextButton")
-UpBtn.Size = UDim2.new(0,70,0,30)
-UpBtn.Position = UDim2.new(0,5,0,240)
-UpBtn.BackgroundColor3 = Color3.new(0.8,0.8,0.2)
-UpBtn.Text = "上升"
-UpBtn.TextColor3 = Color3.new(0,0,0)
-UpBtn.Parent = Main
-
-local DownBtn = Instance.new("TextButton")
-DownBtn.Size = UDim2.new(0,70,0,30)
-DownBtn.Position = UDim2.new(0,80,0,240)
-DownBtn.BackgroundColor3 = Color3.new(0.2,0.7,0.9)
-DownBtn.Text = "下降"
-DownBtn.TextColor3 = Color3.new(0,0,0)
-DownBtn.Parent = Main
-
-local PlayerListFrame = Instance.new("ScrollingFrame")
-PlayerListFrame.Size = UDim2.new(0,80,0,180)
-PlayerListFrame.Position = UDim2.new(0,165,0,30)
-PlayerListFrame.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
-PlayerListFrame.BorderSizePixel = 0
-PlayerListFrame.CanvasSize = UDim2.new(0,0,5,0)
-PlayerListFrame.Parent = Main
-
-local ListLayout = Instance.new("UIListLayout")
-ListLayout.Parent = PlayerListFrame
-ListLayout.SortOrder = Enum.SortOrder.Name
-
-local TPButton = Instance.new("TextButton")
-TPButton.Size = UDim2.new(0,80,0,30)
-TPButton.Position = UDim2.new(0,165,0,220)
-TPButton.BackgroundColor3 = Color3.new(0.3,0.6,1)
-TPButton.Text = "传送"
-TPButton.TextColor3 = Color3.new(1,1,1)
-TPButton.Parent = Main
-
-local selectedPlayer = nil
-
-local function refreshPlayerList()
-    for _,v in pairs(PlayerListFrame:GetChildren()) do
-        if v:IsA("TextButton") then v:Destroy() end
+    local function createPlatform()
+        if platform then return end
+        platform = Instance.new("Part")
+        platform.Name = "AirPlatform"
+        platform.Size = Vector3.new(100, 0.6, 100)
+        platform.Transparency = 0.4
+        platform.CanCollide = true
+        platform.Anchored = true
+        platform.CanTouch = false
+        platform.Color = Color3.new(0, 1, 1)
+        platform.Parent = workspace
     end
-    for _,p in pairs(Players:GetPlayers()) do
-        local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(1,0,0,25)
-        btn.BackgroundColor3 = Color3.new(0.3,0.3,0.3)
-        btn.Text = p.Name
-        btn.TextColor3 = Color3.new(1,1,1)
-        btn.Parent = PlayerListFrame
-        btn.MouseButton1Click:Connect(function()
-            selectedPlayer = p
-            btn.BackgroundColor3 = Color3.new(0.5,0.3,0.3)
-            for _,other in pairs(PlayerListFrame:GetChildren()) do
-                if other:IsA("TextButton") and other ~= btn then
-                    other.BackgroundColor3 = Color3.new(0.3,0.3,0.3)
-                end
-            end
-        end)
-    end
-end
 
-refreshPlayerList()
-Players.PlayerAdded:Connect(refreshPlayerList)
-Players.PlayerRemoving:Connect(refreshPlayerList)
-
-TPButton.MouseButton1Click:Connect(function()
-    if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
-            Player.Character.HumanoidRootPart.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-4)
-        end
-    end
-end)
-
-local drag = false
-local dragStart, startPos
-Top.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        drag = true
-        dragStart = input.Position
-        startPos = Main.Position
-    end
-end)
-UIS.InputChanged:Connect(function(input)
-    if drag then
-        local delta = input.Position - dragStart
-        Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-end)
-UIS.InputEnded:Connect(function(input)
-    drag = false
-end)
-
-local isMin = false
-Mini.MouseButton1Click:Connect(function()
-    isMin = not isMin
-    if isMin then
-        Main.Size = UDim2.new(0,250,0,24)
-        Mini.Text = "+"
-        Toggle.Visible = false
-        Label.Visible = false
-        Plus.Visible = false
-        Minus.Visible = false
-        JumpLabel.Visible = false
-        JumpUp.Visible = false
-        JumpDown.Visible = false
-        FlyLabel.Visible = false
-        FlyPlus.Visible = false
-        FlyMinus.Visible = false
-        RotateToggle.Visible = false
-        RotateLabel.Visible = false
-        RotatePlus.Visible = false
-        RotateMinus.Visible = false
-        UpBtn.Visible = false
-        DownBtn.Visible = false
-        PlayerListFrame.Visible = false
-        TPButton.Visible = false
-    else
-        Main.Size = UDim2.new(0,250,0,275)
-        Mini.Text = "-"
-        Toggle.Visible = true
-        Label.Visible = true
-        Plus.Visible = true
-        Minus.Visible = true
-        JumpLabel.Visible = true
-        JumpUp.Visible = true
-        JumpDown.Visible = true
-        FlyLabel.Visible = true
-        FlyPlus.Visible = true
-        FlyMinus.Visible = true
-        RotateToggle.Visible = true
-        RotateLabel.Visible = true
-        RotatePlus.Visible = true
-        RotateMinus.Visible = true
-        UpBtn.Visible = true
-        DownBtn.Visible = true
-        PlayerListFrame.Visible = true
-        TPButton.Visible = true
-    end
-end)
-
-Close.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
-local enabled = false
-local speed = 1
-local maxSpeed = 1000
-local minSpeed = 1
-
-local jumpPower = 50
-local maxJump = 10000
-local minJump = 20
-
-local flySpeed = 80
-local maxFly = 500
-local minFly = 20
-
-local rotateEnabled = false
-local rotateSpeed = 3
-local maxRotate = 200
-local minRotate = 1
-
-local platform = nil
-local isAscending = false
-
-local function getChar() return Player.Character end
-local function getHRP() local c=getChar() return c and c:FindFirstChild("HumanoidRootPart") end
-local function getHum() local c=getChar() return c and c:FindFirstChild("Humanoid") end
-
-local function updateSpeed()
-    Label.Text = "速度: "..speed
-    local h = getHum()
-    if h then h.WalkSpeed = enabled and 16*speed or 16 end
-end
-
--- 🔥 跳跃修复（关键）
-local function updateJump()
-    JumpLabel.Text = "跳跃: "..jumpPower
-    local hum = getHum()
-    if hum then
-        hum.JumpPower = jumpPower
-    end
-end
-
-local function updateFly()
-    FlyLabel.Text = "飞行: "..flySpeed
-end
-
-local function updateRotate()
-    RotateLabel.Text = "转速: "..rotateSpeed
-end
-
-Toggle.MouseButton1Click:Connect(function()
-    enabled = not enabled
-    Toggle.Text = enabled and "ON" or "OFF"
-    Toggle.BackgroundColor3 = enabled and Color3.new(0.2,0.7,0.2) or Color3.new(0.7,0.2,0.2)
-    updateSpeed()
-end)
-
-Plus.MouseButton1Click:Connect(function()
-    if speed < maxSpeed then speed += 10 updateSpeed() end
-end)
-Minus.MouseButton1Click:Connect(function()
-    if speed > minSpeed then speed -= 10 updateSpeed() end
-end)
-
-JumpUp.MouseButton1Click:Connect(function()
-    if jumpPower < maxJump then
-        jumpPower += 100
-        updateJump()
-    end
-end)
-JumpDown.MouseButton1Click:Connect(function()
-    if jumpPower > minJump then
-        jumpPower -= 100
-        updateJump()
-    end
-end)
-
-FlyPlus.MouseButton1Click:Connect(function()
-    if flySpeed < maxFly then flySpeed += 10 updateFly() end
-end)
-FlyMinus.MouseButton1Click:Connect(function()
-    if flySpeed > minFly then flySpeed -= 10 updateFly() end
-end)
-
-RotateToggle.MouseButton1Click:Connect(function()
-    rotateEnabled = not rotateEnabled
-    RotateToggle.Text = rotateEnabled and "旋转:ON" or "旋转:OFF"
-    RotateToggle.BackgroundColor3 = rotateEnabled and Color3.new(0.2,0.7,0.2) or Color3.new(0.7,0.2,0.2)
-end)
-
-RotatePlus.MouseButton1Click:Connect(function()
-    if rotateSpeed < maxRotate then rotateSpeed += 10 updateRotate() end
-end)
-RotateMinus.MouseButton1Click:Connect(function()
-    if rotateSpeed > minRotate then rotateSpeed -= 10 updateRotate() end
-end)
-
-UpBtn.MouseButton1Down:Connect(function()
-    isAscending = true
-    local hrp = getHRP()
-    if not hrp then return end
-    if platform then platform:Destroy() end
-    platform = Instance.new("Part")
-    platform.Name = "AirPlatform"
-    platform.Size = Vector3.new(100000, 2, 100000)
-    platform.Anchored = true
-    platform.CanCollide = true
-    platform.Transparency = 1
-    platform.Parent = workspace
-end)
-
-UpBtn.MouseButton1Up:Connect(function()
-    isAscending = false
-end)
-
-DownBtn.MouseButton1Click:Connect(function()
-    isAscending = false
-    if platform then
-        platform:Destroy()
-        platform = nil
-    end
-end)
-
-RunService.Heartbeat:Connect(function()
-    local hrp = getHRP()
-    if not hrp then return end
-    if isAscending then
-        hrp.Velocity = Vector3.new(hrp.Velocity.X, flySpeed, hrp.Velocity.Z)
+    local function removePlatform()
         if platform then
-            platform.Position = Vector3.new(hrp.Position.X, hrp.Position.Y - 6, hrp.Position.Z)
+            platform:Destroy()
+            platform = nil
         end
     end
-    if rotateEnabled then
-        hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(rotateSpeed), 0)
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Parent = Player.PlayerGui
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.IgnoreGuiInset = true
+
+    local Main = Instance.new("Frame")
+    Main.Size = UDim2.new(0, 420, 0, 250)
+    Main.Position = UDim2.new(0.05,0,0.1,0)
+    Main.BackgroundColor3 = Color3.new(0.12,0.12,0.12)
+    Main.Parent = ScreenGui
+
+    local Top = Instance.new("Frame")
+    Top.Size = UDim2.new(1,0,0,26)
+    Top.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
+    Top.Parent = Main
+
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(0,180,0,26)
+    Title.Position = UDim2.new(0,5,0,0)
+    Title.BackgroundTransparency = 1
+    Title.Text = "宇秋调节面板"
+    Title.TextColor3 = Color3.new(1,1,1)
+    Title.TextSize = 14
+    Title.Font = Enum.Font.GothamBold
+    Title.Parent = Top
+
+    local Close = Instance.new("TextButton")
+    Close.Size = UDim2.new(0,26,0,26)
+    Close.Position = UDim2.new(1,-26,0,0)
+    Close.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
+    Close.Text = "×"
+    Close.TextColor3 = Color3.new(1,1,1)
+    Close.Parent = Top
+
+    local Mini = Instance.new("TextButton")
+    Mini.Size = UDim2.new(0,26,0,26)
+    Mini.Position = UDim2.new(1,-52,0,0)
+    Mini.BackgroundColor3 = Color3.new(0.2,0.4,0.7)
+    Mini.Text = "-"
+    Mini.TextColor3 = Color3.new(1,1,1)
+    Mini.Parent = Top
+
+    local Toggle = Instance.new("TextButton")
+    Toggle.Size = UDim2.new(0, 80, 0, 30)
+    Toggle.Position = UDim2.new(0, 10, 0, 40)
+    Toggle.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
+    Toggle.Text = "加速 OFF"
+    Toggle.TextColor3 = Color3.new(1,1,1)
+    Toggle.Parent = Main
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(0, 70, 0, 30)
+    Label.Position = UDim2.new(0, 95, 0, 40)
+    Label.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
+    Label.Text = "速度: 1"
+    Label.TextColor3 = Color3.new(1,1,1)
+    Label.Parent = Main
+
+    local Plus = Instance.new("TextButton")
+    Plus.Size = UDim2.new(0, 35, 0, 30)
+    Plus.Position = UDim2.new(0, 170, 0, 40)
+    Plus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
+    Plus.Text = "+"
+    Plus.Parent = Main
+
+    local Minus = Instance.new("TextButton")
+    Minus.Size = UDim2.new(0, 35, 0, 30)
+    Minus.Position = UDim2.new(0, 210, 0, 40)
+    Minus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
+    Minus.Text = "-"
+    Minus.Parent = Main
+
+    local JumpLabel = Instance.new("TextLabel")
+    JumpLabel.Size = UDim2.new(0, 70, 0, 30)
+    JumpLabel.Position = UDim2.new(0, 10, 0, 75)
+    JumpLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
+    JumpLabel.Text = "跳跃: 50"
+    JumpLabel.TextColor3 = Color3.new(1,1,1)
+    JumpLabel.Parent = Main
+
+    local JumpUp = Instance.new("TextButton")
+    JumpUp.Size = UDim2.new(0, 35, 0, 30)
+    JumpUp.Position = UDim2.new(0, 85, 0, 75)
+    JumpUp.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
+    JumpUp.Text = "+跳"
+    JumpUp.Parent = Main
+
+    local JumpDown = Instance.new("TextButton")
+    JumpDown.Size = UDim2.new(0, 35, 0, 30)
+    JumpDown.Position = UDim2.new(0, 125, 0, 75)
+    JumpDown.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
+    JumpDown.Text = "-跳"
+    JumpDown.Parent = Main
+
+    local InfJumpBtn = Instance.new("TextButton")
+    InfJumpBtn.Size = UDim2.new(0, 90, 0, 30)
+    InfJumpBtn.Position = UDim2.new(0, 170, 0, 75)
+    InfJumpBtn.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
+    InfJumpBtn.Text = "无限跳 OFF"
+    InfJumpBtn.Parent = Main
+
+    local FlyLabel = Instance.new("TextLabel")
+    FlyLabel.Size = UDim2.new(0, 70, 0, 30)
+    FlyLabel.Position = UDim2.new(0, 10, 0, 110)
+    FlyLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
+    FlyLabel.Text = "飞行: 80"
+    FlyLabel.TextColor3 = Color3.new(1,1,1)
+    FlyLabel.Parent = Main
+
+    local FlyPlus = Instance.new("TextButton")
+    FlyPlus.Size = UDim2.new(0, 35, 0, 30)
+    FlyPlus.Position = UDim2.new(0, 85, 0, 110)
+    FlyPlus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
+    FlyPlus.Text = "+飞"
+    FlyPlus.Parent = Main
+
+    local FlyMinus = Instance.new("TextButton")
+    FlyMinus.Size = UDim2.new(0, 35, 0, 30)
+    FlyMinus.Position = UDim2.new(0, 125, 0, 110)
+    FlyMinus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
+    FlyMinus.Text = "-飞"
+    FlyMinus.Parent = Main
+
+    local RotateToggle = Instance.new("TextButton")
+    RotateToggle.Size = UDim2.new(0, 80, 0, 30)
+    RotateToggle.Position = UDim2.new(0, 10, 0, 145)
+    RotateToggle.BackgroundColor3 = Color3.new(0.7,0.2,0.2)
+    RotateToggle.Text = "旋转:OFF"
+    RotateToggle.Parent = Main
+
+    local RotateLabel = Instance.new("TextLabel")
+    RotateLabel.Size = UDim2.new(0, 60, 0, 30)
+    RotateLabel.Position = UDim2.new(0, 95, 0, 145)
+    RotateLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
+    RotateLabel.Text = "转速: 3"
+    RotateLabel.TextColor3 = Color3.new(1,1,1)
+    RotateLabel.Parent = Main
+
+    local RotatePlus = Instance.new("TextButton")
+    RotatePlus.Size = UDim2.new(0, 35, 0, 30)
+    RotatePlus.Position = UDim2.new(0, 160, 0, 145)
+    RotatePlus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
+    RotatePlus.Text = "+旋"
+    RotatePlus.Parent = Main
+
+    local RotateMinus = Instance.new("TextButton")
+    RotateMinus.Size = UDim2.new(0, 35, 0, 30)
+    RotateMinus.Position = UDim2.new(0, 200, 0, 145)
+    RotateMinus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
+    RotateMinus.Text = "-旋"
+    RotateMinus.Parent = Main
+
+    local UpBtn = Instance.new("TextButton")
+    UpBtn.Size = UDim2.new(0, 100, 0, 30)
+    UpBtn.Position = UDim2.new(0, 10, 0, 185)
+    UpBtn.BackgroundColor3 = Color3.new(0.8,0.8,0.2)
+    UpBtn.Text = "上升"
+    UpBtn.TextColor3 = Color3.new(0,0,0)
+    UpBtn.Parent = Main
+
+    local DownBtn = Instance.new("TextButton")
+    DownBtn.Size = UDim2.new(0, 100, 0, 30)
+    DownBtn.Position = UDim2.new(0, 115, 0, 185)
+    DownBtn.BackgroundColor3 = Color3.new(0.2,0.7,0.9)
+    DownBtn.Text = "下降"
+    DownBtn.TextColor3 = Color3.new(0,0,0)
+    DownBtn.Parent = Main
+
+    local PlayerListFrame = Instance.new("ScrollingFrame")
+    PlayerListFrame.Size = UDim2.new(0, 100, 0, 170)
+    PlayerListFrame.Position = UDim2.new(0, 310, 0, 40)
+    PlayerListFrame.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
+    PlayerListFrame.BorderSizePixel = 0
+    PlayerListFrame.CanvasSize = UDim2.new(0,0,10,0)
+    PlayerListFrame.ScrollBarThickness = 3
+    PlayerListFrame.Parent = Main
+
+    local ListLayout = Instance.new("UIListLayout")
+    ListLayout.Parent = PlayerListFrame
+    ListLayout.SortOrder = Enum.SortOrder.Name
+    ListLayout.Padding = UDim.new(0,2)
+
+    local TPButton = Instance.new("TextButton")
+    TPButton.Size = UDim2.new(0, 100, 0, 30)
+    TPButton.Position = UDim2.new(0, 310, 0, 215)
+    TPButton.BackgroundColor3 = Color3.new(0.3,0.6,1)
+    TPButton.Text = "传送"
+    TPButton.TextColor3 = Color3.new(1,1,1)
+    TPButton.Parent = Main
+
+    local selectedPlayer = nil
+    local function refreshPlayerList()
+        for _,v in pairs(PlayerListFrame:GetChildren()) do
+            if v:IsA("TextButton") then v:Destroy() end
+        end
+        for _,p in pairs(Players:GetPlayers()) do
+            local btn = Instance.new("TextButton")
+            btn.Size = UDim2.new(1,0,0,24)
+            btn.BackgroundColor3 = Color3.new(0.3,0.3,0.3)
+            btn.Text = p.Name
+            btn.TextColor3 = Color3.new(1,1,1)
+            btn.Parent = PlayerListFrame
+            btn.MouseButton1Click:Connect(function()
+                selectedPlayer = p
+                for _,x in pairs(PlayerListFrame:GetChildren()) do
+                    if x:IsA("TextButton") then x.BackgroundColor3 = Color3.new(0.3,0.3,0.3) end
+                end
+                btn.BackgroundColor3 = Color3.new(0.5,0.3,0.3)
+            end)
+        end
     end
-end)
+    refreshPlayerList()
+    Players.PlayerAdded:Connect(refreshPlayerList)
+    Players.PlayerRemoving:Connect(refreshPlayerList)
 
-end)
+    TPButton.MouseButton1Click:Connect(function()
+        if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+                Player.Character.HumanoidRootPart.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-4)
+            end
+        end
+    end)
 
-task.spawn(function()
-    TweenService:Create(BlackBg, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
-    task.wait(0.2)
-    TweenService:Create(MainPanel, TweenInfo.new(0.8), {BackgroundTransparency=0}):Play()
-    TweenService:Create(TopLight, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
-    task.wait(0.3)
-    TweenService:Create(Title, TweenInfo.new(0.8), {TextTransparency=0}):Play()
-    TweenService:Create(SubTitle, TweenInfo.new(0.8), {TextTransparency=0}):Play()
-    TweenService:Create(BarBg, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
-    TweenService:Create(Bar, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
-    TweenService:Create(StartBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
-    TweenService:Create(TgBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
-    TweenService:Create(QqBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
+    local drag = false
+    local dragStart, startPos
+    Top.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            drag = true
+            dragStart = input.Position
+            startPos = Main.Position
+        end
+    end)
+    UIS.InputChanged:Connect(function(input)
+        if drag then
+            local delta = input.Position - dragStart
+            Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    UIS.InputEnded:Connect(function(input)
+        drag = false
+    end)
+
+    local isMin = false
+    Mini.MouseButton1Click:Connect(function()
+        isMin = not isMin
+        if isMin then
+            Main.Size = UDim2.new(0, 420, 0, 26)
+            Main.BackgroundTransparency = 1
+            Mini.Text = "+"
+            Toggle.Visible = false
+            Label.Visible = false
+            Plus.Visible = false
+            Minus.Visible = false
+            JumpLabel.Visible = false
+            JumpUp.Visible = false
+            JumpDown.Visible = false
+            InfJumpBtn.Visible = false
+            FlyLabel.Visible = false
+            FlyPlus.Visible = false
+            FlyMinus.Visible = false
+            RotateToggle.Visible = false
+            RotateLabel.Visible = false
+            RotatePlus.Visible = false
+            RotateMinus.Visible = false
+            UpBtn.Visible = false
+            DownBtn.Visible = false
+            PlayerListFrame.Visible = false
+            TPButton.Visible = false
+        else
+            Main.Size = UDim2.new(0, 420, 0, 250)
+            Main.BackgroundTransparency = 0
+            Mini.Text = "-"
+            Toggle.Visible = true
+            Label.Visible = true
+            Plus.Visible = true
+            Minus.Visible = true
+            JumpLabel.Visible = true
+            JumpUp.Visible = true
+            JumpDown.Visible = true
+            InfJumpBtn.Visible = true
+            FlyLabel.Visible = true
+            FlyPlus.Visible = true
+            FlyMinus.Visible = true
+            RotateToggle.Visible = true
+            RotateLabel.Visible = true
+            RotatePlus.Visible = true
+            RotateMinus.Visible = true
+            UpBtn.Visible = true
+            DownBtn.Visible = true
+            PlayerListFrame.Visible = true
+            TPButton.Visible = true
+        end
+    end)
+
+    Close.MouseButton1Click:Connect(function()
+        removePlatform()
+        ScreenGui:Destroy()
+    end)
+
+    local enabled = false
+    local speed = 1
+    local jumpPower = 50
+    local flySpeed = 80
+    local rotateEnabled = false
+    local rotateSpeed = 3
+    local infJump = false
+
+    local function getChar() return Player.Character end
+    local function getHRP() local c=getChar() return c and c:FindFirstChild("HumanoidRootPart") end
+    local function getHum() local c=getChar() return c and c:FindFirstChild("Humanoid") end
+
+    local function updateSpeed()
+        Label.Text = "速度: "..speed
+        local h = getHum()
+        if h then h.WalkSpeed = enabled and 16*speed or 16 end
+    end
+
+    local function updateJump()
+        JumpLabel.Text = "跳跃: "..jumpPower
+        local hum = getHum()
+        if hum then hum.JumpPower = jumpPower end
+    end
+
+    local function updateFly()
+        FlyLabel.Text = "飞行: "..flySpeed
+    end
+
+    local function updateRotate()
+        RotateLabel.Text = "转速: "..rotateSpeed
+    end
+
+    Toggle.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        Toggle.Text = enabled and "加速 ON" or "加速 OFF"
+        Toggle.BackgroundColor3 = enabled and Color3.new(0.2,0.7,0.2) or Color3.new(0.7,0.2,0.2)
+        updateSpeed()
+    end)
+
+    Plus.MouseButton1Click:Connect(function() speed += 10 updateSpeed() end)
+    Minus.MouseButton1Click:Connect(function() if speed > 1 then speed -= 10 updateSpeed() end end)
+
+    JumpUp.MouseButton1Click:Connect(function() jumpPower += 50 updateJump() end)
+    JumpDown.MouseButton1Click:Connect(function() if jumpPower > 20 then jumpPower -= 50 updateJump() end end)
+
+    InfJumpBtn.MouseButton1Click:Connect(function()
+        infJump = not infJump
+        InfJumpBtn.Text = infJump and "无限跳 ON" or "无限跳 OFF"
+        InfJumpBtn.BackgroundColor3 = infJump and Color3.new(0.2,0.7,0.2) or Color3.new(0.7,0.2,0.2)
+    end)
+
+    UIS.JumpRequest:Connect(function()
+        if infJump then
+            local hum = getHum()
+            if hum then hum:ChangeState(Enum.HumanoidStateType.Jumping) end
+        end
+    end)
+
+    FlyPlus.MouseButton1Click:Connect(function() flySpeed += 10 updateFly() end)
+    FlyMinus.MouseButton1Click:Connect(function() if flySpeed > 20 then flySpeed -= 10 updateFly() end end)
+
+    RotateToggle.MouseButton1Click:Connect(function()
+        rotateEnabled = not rotateEnabled
+        RotateToggle.Text = rotateEnabled and "旋转:ON" or "旋转:OFF"
+        RotateToggle.BackgroundColor3 = rotateEnabled and Color3.new(0.2,0.7,0.2) or Color3.new(0.7,0.2,0.2)
+    end)
+
+    RotatePlus.MouseButton1Click:Connect(function() rotateSpeed += 5 updateRotate() end)
+    RotateMinus.MouseButton1Click:Connect(function() if rotateSpeed > 1 then rotateSpeed -= 5 updateRotate() end end)
+
+    UpBtn.MouseButton1Down:Connect(function()
+        isAscending = true
+        createPlatform()
+    end)
+
+    UpBtn.MouseButton1Up:Connect(function()
+        isAscending = false
+    end)
+
+    DownBtn.MouseButton1Click:Connect(function()
+        isAscending = false
+        removePlatform()
+    end)
+
+    RunService.Heartbeat:Connect(function()
+        local hrp = getHRP()
+        if not hrp then return end
+
+        if isAscending then
+            hrp.Velocity = Vector3.new(hrp.Velocity.X, flySpeed, hrp.Velocity.Z)
+            if platform then
+                platform.CFrame = hrp.CFrame * CFrame.new(0, -3.5, 0)
+            end
+        end
+
+        if rotateEnabled then
+            hrp.CFrame *= CFrame.Angles(0, math.rad(rotateSpeed), 0)
+        end
+    end)
 end)
