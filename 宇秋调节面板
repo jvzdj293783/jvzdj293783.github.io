@@ -538,4 +538,87 @@ StartBtn.MouseButton1Click:Connect(function()
             hrp.CFrame *= CFrame.Angles(0, math.rad(rotateSpeed), 0)
         end
     end)
+end)local player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local gui = Instance.new("ScreenGui")
+gui.Parent = player.PlayerGui
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0, 80, 0, 26)
+btn.Position = UDim2.new(0, 50, 0, 50)
+btn.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+btn.TextColor3 = Color3.new(1, 1, 1)
+btn.Text = "互动 OFF"
+btn.TextSize = 13
+btn.Parent = gui
+
+-- 开关状态
+local enabled = false
+local originalValues = {}
+
+-- ==================== 拖动（保证能拖）====================
+local dragging = false
+local dragStart, startPos
+
+btn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = btn.Position
+    end
+end)
+
+UIS.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        btn.Position = UDim2.new(
+            0, startPos.X.Offset + delta.X,
+            0, startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- ==================== 开关 ====================
+btn.MouseButton1Click:Connect(function()
+    enabled = not enabled
+
+    if enabled then
+        btn.Text = "互动 ON"
+        btn.BackgroundColor3 = Color3.new(0, 0.7, 0.2)
+    else
+        btn.Text = "互动 OFF"
+        btn.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+
+        -- 关闭时还原所有长按时间
+        for prompt, orig in pairs(originalValues) do
+            if prompt:IsDescendantOf(workspace) then
+                prompt.HoldDuration = orig
+            end
+        end
+        table.clear(originalValues)
+    end
+end)
+
+-- ==================== 秒互动 ====================
+RunService.Heartbeat:Connect(function()
+    if not enabled then return end
+
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("ProximityPrompt") then
+            if not originalValues[v] then
+                originalValues[v] = v.HoldDuration
+            end
+            v.HoldDuration = 0
+        end
+    end
 end)
