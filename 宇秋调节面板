@@ -703,3 +703,131 @@ RunService.Heartbeat:Connect(function()
         end
     end
 end)
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = LocalPlayer.PlayerGui
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- 按钮放在屏幕右侧，绝对可见
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0, 100, 0, 30)
+btn.Position = UDim2.new(1, -120, 0, 80)
+btn.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+btn.TextColor3 = Color3.new(1, 1, 1)
+btn.Text = "透视 OFF"
+btn.TextSize = 14
+btn.Parent = ScreenGui
+
+local enabled = false
+local espCache = {}
+
+-- 拖动
+local dragging, dragStart, startPos
+btn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = btn.Position
+    end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        btn.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
+    end
+end)
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- 开关
+btn.MouseButton1Click:Connect(function()
+    enabled = not enabled
+    btn.Text = enabled and "透视 ON" or "透视 OFF"
+    btn.BackgroundColor3 = enabled and Color3.new(0, 0.7, 0.2) or Color3.new(0.2, 0.2, 0.2)
+
+    if not enabled then
+        for p, v in pairs(espCache) do
+            pcall(function() v:Destroy() end)
+        end
+        table.clear(espCache)
+    end
+end)
+
+-- 全身高亮 + 名字
+RunService.Heartbeat:Connect(function()
+    if not enabled then return end
+
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and plr.Character then
+            local char = plr.Character
+            local head = char:FindFirstChild("Head")
+            local hrp = char:FindFirstChild("HumanoidRootPart")
+
+            if head and hrp then
+                local container = espCache[plr]
+                if not container then
+                    container = Instance.new("Folder")
+                    container.Name = "ESP"
+                    container.Parent = char
+                    espCache[plr] = container
+                end
+
+                -- 名字
+                local nameGui = container:FindFirstChild("Name")
+                if not nameGui then
+                    nameGui = Instance.new("BillboardGui")
+                    nameGui.Name = "Name"
+                    nameGui.AlwaysOnTop = true
+                    nameGui.Size = UDim2.new(0,120,0,30)
+                    nameGui.StudsOffset = Vector3.new(0,2.2,0)
+                    nameGui.Adornee = head
+                    nameGui.Parent = container
+
+                    local txt = Instance.new("TextLabel")
+                    txt.Size = UDim2.new(1,0,1,0)
+                    txt.BackgroundTransparency = 1
+                    txt.TextColor3 = Color3.new(0,1,0)
+                    txt.TextStrokeTransparency = 0
+                    txt.TextStrokeColor3 = Color3.new(0,0,0)
+                    txt.TextScaled = true
+                    txt.Parent = nameGui
+                end
+                nameGui.TextLabel.Text = plr.Name
+
+                -- 全身描边
+                for _, part in pairs(char:GetChildren()) do
+                    if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                        local box = container:FindFirstChild("Box_"..part.Name)
+                        if not box then
+                            box = Instance.new("BoxHandleAdornment")
+                            box.Name = "Box_"..part.Name
+                            box.Adornee = part
+                            box.AlwaysOnTop = true
+                            box.ZIndex = 1
+                            box.Color3 = Color3.new(0,1,0)
+                            box.Transparency = 0.4
+                            box.Size = part.Size
+                            box.Parent = container
+                        end
+                        box.Visible = true
+                    end
+                end
+            end
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(p)
+    if espCache[p] then
+        pcall(function() espCache[p]:Destroy() end)
+        espCache[p] = nil
+    end
+end)
