@@ -1,16 +1,59 @@
 local Player = game:GetService("Players").LocalPlayer
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
 
 wait(0.1)
 
+-- 头顶悬浮窗
+local function setupHeadLabel()
+    local char = Player.Character or Player.CharacterAdded:Wait()
+    local head = char:WaitForChild("Head")
+
+    local bill = Instance.new("BillboardGui")
+    bill.Name = "HeadLabel"
+    bill.Adornee = head
+    bill.Parent = char
+    bill.Size = UDim2.new(0, 100, 0, 30)
+    bill.StudsOffset = Vector3.new(0, 2, 0)
+    bill.AlwaysOnTop = true
+    bill.MaxDistance = 100
+
+    local bg = Instance.new("Frame")
+    bg.Size = UDim2.new(1,0,1,0)
+    bg.BackgroundColor3 = Color3.new(0.1,0.1,0.1)
+    bg.BackgroundTransparency = 0.3
+    bg.Parent = bill
+
+    local text = Instance.new("TextLabel")
+    text.Size = UDim2.new(1,0,1,0)
+    text.BackgroundTransparency = 1
+    text.Text = Player.Name.." | 正常"
+    text.TextColor3 = Color3.new(1,1,1)
+    text.TextSize = 14
+    text.Parent = bg
+
+    -- 实时更新状态
+    RunService.Heartbeat:Connect(function()
+        local state = "正常"
+        if enabled then state = "加速" end
+        if isAscending then state = "飞行" end
+        if rotateEnabled then state = "旋转" end
+        text.Text = Player.Name.." | "..state
+    end)
+end
+
+Player.CharacterAdded:Connect(setupHeadLabel)
+setupHeadLabel()
+
+-- 主界面
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = Player.PlayerGui
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 
 local Main = Instance.new("Frame")
-Main.Size = UDim2.new(0,160,0,275)
+Main.Size = UDim2.new(0,250,0,275) -- 加宽面板放右边列表
 Main.Position = UDim2.new(0.05,0,0.1,0)
 Main.BackgroundColor3 = Color3.new(0.12,0.12,0.12)
 Main.Parent = ScreenGui
@@ -179,6 +222,64 @@ DownBtn.Text = "下降"
 DownBtn.TextColor3 = Color3.new(0,0,0)
 DownBtn.Parent = Main
 
+-- 玩家列表 + 传送（挪到右边了！）
+local PlayerListFrame = Instance.new("ScrollingFrame")
+PlayerListFrame.Size = UDim2.new(0,80,0,180)
+PlayerListFrame.Position = UDim2.new(0,165,0,30) -- 右边空白位置
+PlayerListFrame.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
+PlayerListFrame.BorderSizePixel = 0
+PlayerListFrame.CanvasSize = UDim2.new(0,0,5,0)
+PlayerListFrame.Parent = Main
+
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.Parent = PlayerListFrame
+ListLayout.SortOrder = Enum.SortOrder.Name
+
+local TPButton = Instance.new("TextButton")
+TPButton.Size = UDim2.new(0,80,0,30)
+TPButton.Position = UDim2.new(0,165,0,220)
+TPButton.BackgroundColor3 = Color3.new(0.3,0.6,1)
+TPButton.Text = "传送"
+TPButton.TextColor3 = Color3.new(1,1,1)
+TPButton.Parent = Main
+
+local selectedPlayer = nil
+
+local function refreshPlayerList()
+    for _,v in pairs(PlayerListFrame:GetChildren()) do
+        if v:IsA("TextButton") then v:Destroy() end
+    end
+    for _,p in pairs(Players:GetPlayers()) do
+        local btn = Instance.new("TextButton")
+        btn.Size = UDim2.new(1,0,0,25)
+        btn.BackgroundColor3 = Color3.new(0.3,0.3,0.3)
+        btn.Text = p.Name
+        btn.TextColor3 = Color3.new(1,1,1)
+        btn.Parent = PlayerListFrame
+        btn.MouseButton1Click:Connect(function()
+            selectedPlayer = p
+            btn.BackgroundColor3 = Color3.new(0.5,0.3,0.3)
+            for _,other in pairs(PlayerListFrame:GetChildren()) do
+                if other:IsA("TextButton") and other ~= btn then
+                    other.BackgroundColor3 = Color3.new(0.3,0.3,0.3)
+                end
+            end
+        end)
+    end
+end
+
+refreshPlayerList()
+Players.PlayerAdded:Connect(refreshPlayerList)
+Players.PlayerRemoving:Connect(refreshPlayerList)
+
+TPButton.MouseButton1Click:Connect(function()
+    if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+            Player.Character.HumanoidRootPart.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-4)
+        end
+    end
+end)
+
 -- 拖动
 local drag = false
 local dragStart, startPos
@@ -204,7 +305,7 @@ local isMin = false
 Mini.MouseButton1Click:Connect(function()
     isMin = not isMin
     if isMin then
-        Main.Size = UDim2.new(0,160,0,24)
+        Main.Size = UDim2.new(0,250,0,24)
         Mini.Text = "+"
         Toggle.Visible = false
         Label.Visible = false
@@ -222,8 +323,10 @@ Mini.MouseButton1Click:Connect(function()
         RotateMinus.Visible = false
         UpBtn.Visible = false
         DownBtn.Visible = false
+        PlayerListFrame.Visible = false
+        TPButton.Visible = false
     else
-        Main.Size = UDim2.new(0,160,0,275)
+        Main.Size = UDim2.new(0,250,0,275)
         Mini.Text = "-"
         Toggle.Visible = true
         Label.Visible = true
@@ -241,6 +344,8 @@ Mini.MouseButton1Click:Connect(function()
         RotateMinus.Visible = true
         UpBtn.Visible = true
         DownBtn.Visible = true
+        PlayerListFrame.Visible = true
+        TPButton.Visible = true
     end
 end)
 
@@ -249,7 +354,7 @@ Close.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
 
--- 数值
+-- 变量
 local enabled = false
 local speed = 1
 local maxSpeed = 1000
@@ -265,7 +370,7 @@ local minFly = 20
 
 local rotateEnabled = false
 local rotateSpeed = 3
-local maxRotate = 200  -- 这里改成最高200
+local maxRotate = 200
 local minRotate = 1
 
 local platform = nil
@@ -295,7 +400,7 @@ local function updateRotate()
     RotateLabel.Text = "转速: "..rotateSpeed
 end
 
--- 移动
+-- 速度开关
 Toggle.MouseButton1Click:Connect(function()
     enabled = not enabled
     Toggle.Text = enabled and "ON" or "OFF"
@@ -340,7 +445,7 @@ RotateMinus.MouseButton1Click:Connect(function()
     if rotateSpeed > minRotate then rotateSpeed -= 10 updateRotate() end
 end)
 
--- 上升飞行 + 跟随地板
+-- 上升/下降
 UpBtn.MouseButton1Down:Connect(function()
     isAscending = true
     local hrp = getHRP()
@@ -372,7 +477,6 @@ RunService.Heartbeat:Connect(function()
     local hrp = getHRP()
     if not hrp then return end
 
-    -- 上升飞行
     if isAscending then
         hrp.Velocity = Vector3.new(hrp.Velocity.X, flySpeed, hrp.Velocity.Z)
         if platform then
@@ -380,7 +484,6 @@ RunService.Heartbeat:Connect(function()
         end
     end
 
-    -- 旋转
     if rotateEnabled then
         hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(rotateSpeed), 0)
     end
