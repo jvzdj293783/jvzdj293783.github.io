@@ -265,7 +265,7 @@ local minFly = 20
 
 local rotateEnabled = false
 local rotateSpeed = 3
-local maxRotate = 1000
+local maxRotate = 200  -- 这里改成最高200
 local minRotate = 1
 
 local platform = nil
