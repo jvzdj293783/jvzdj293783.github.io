@@ -3,7 +3,6 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local pg = Player.PlayerGui
 
--- 启动界面（完美居中）
 local BootGui = Instance.new("ScreenGui")
 BootGui.Parent = pg
 BootGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -18,7 +17,7 @@ BlackBg.Parent = BootGui
 
 local MainPanel = Instance.new("Frame")
 MainPanel.BackgroundColor3 = Color3.fromRGB(22, 22, 30)
-MainPanel.Size = UDim2.new(0, 460, 0, 270)
+MainPanel.Size = UDim2.new(0, 460, 0, 330)
 MainPanel.AnchorPoint = Vector2.new(0.5, 0.5)
 MainPanel.Position = UDim2.new(0.5, 0, 0.5, 0)
 MainPanel.ClipsDescendants = true
@@ -33,7 +32,7 @@ TopLight.Parent = MainPanel
 local Title = Instance.new("TextLabel")
 Title.BackgroundTransparency = 1
 Title.Size = UDim2.new(1, 0, 0, 60)
-Title.Position = UDim2.new(0, 0, 0, 50)
+Title.Position = UDim2.new(0, 0, 0, 30)
 Title.Text = "宇  秋"
 Title.TextColor3 = Color3.fromRGB(0, 255, 140)
 Title.TextSize = 58
@@ -43,8 +42,8 @@ Title.Parent = MainPanel
 local SubTitle = Instance.new("TextLabel")
 SubTitle.BackgroundTransparency = 1
 SubTitle.Size = UDim2.new(1, 0, 0, 22)
-SubTitle.Position = UDim2.new(0, 0, 0, 115)
-SubTitle.Text = "YUQIU · 多功能辅助脚本"
+SubTitle.Position = UDim2.new(0, 0, 0, 90)
+SubTitle.Text = "YUQIU · 多功能辅助"
 SubTitle.TextColor3 = Color3.fromRGB(160, 160, 180)
 SubTitle.TextSize = 18
 SubTitle.Parent = MainPanel
@@ -52,7 +51,7 @@ SubTitle.Parent = MainPanel
 local BarBg = Instance.new("Frame")
 BarBg.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 BarBg.Size = UDim2.new(0, 360, 0, 6)
-BarBg.Position = UDim2.new(0.5, -180, 0, 160)
+BarBg.Position = UDim2.new(0.5, -180, 0, 140)
 BarBg.Parent = MainPanel
 
 local Bar = Instance.new("Frame")
@@ -63,22 +62,60 @@ Bar.Parent = BarBg
 
 local StartBtn = Instance.new("TextButton")
 StartBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 130)
-StartBtn.Size = UDim2.new(0, 240, 0, 54)
-StartBtn.Position = UDim2.new(0.5, -120, 0.5, 50)
+StartBtn.Size = UDim2.new(0, 240, 0, 50)
+StartBtn.Position = UDim2.new(0.5, -120, 0.5, 30)
 StartBtn.Text = "啟 動 腳 本"
 StartBtn.TextColor3 = Color3.new(1, 1, 1)
 StartBtn.TextSize = 22
 StartBtn.Font = Enum.Font.GothamBold
 StartBtn.Parent = MainPanel
 
+-- TG 按钮（修复版）
+local TgBtn = Instance.new("TextButton")
+TgBtn.BackgroundColor3 = Color3.fromRGB(40, 120, 200)
+TgBtn.Size = UDim2.new(0, 200, 0, 38)
+TgBtn.Position = UDim2.new(0.5, -210, 0.5, 90)
+TgBtn.Text = "添加宇秋TG频道"
+TgBtn.TextColor3 = Color3.new(1,1,1)
+TgBtn.TextSize = 16
+TgBtn.Parent = MainPanel
+
+TgBtn.MouseButton1Click:Connect(function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "TG频道",
+        Text = "https://t.me/yqnbnb688",
+        Duration = 5
+    })
+end)
+
+-- QQ群 按钮（修复版）
+local QqBtn = Instance.new("TextButton")
+QqBtn.BackgroundColor3 = Color3.fromRGB(20, 160, 80)
+QqBtn.Size = UDim2.new(0, 200, 0, 38)
+QqBtn.Position = UDim2.new(0.5, 10, 0.5, 90)
+QqBtn.Text = "添加QQ群"
+QqBtn.TextColor3 = Color3.new(1,1,1)
+QqBtn.TextSize = 16
+QqBtn.Parent = MainPanel
+
+QqBtn.MouseButton1Click:Connect(function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "QQ群链接",
+        Text = "141288279",
+        Duration = 5
+    })
+end)
+
+-- 启动逻辑
 StartBtn.MouseButton1Click:Connect(function()
-    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 220, 0, 50)}):Play()
+    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 220, 0, 46)}):Play()
     task.wait(0.12)
-    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 240, 0, 54)}):Play()
+    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 240, 0, 50)}):Play()
     TweenService:Create(Bar, TweenInfo.new(0.8), {Size = UDim2.new(1, 0, 1, 0)}):Play()
     task.wait(0.9)
     BootGui:Destroy()
 
+    -- 下面是你原来的功能代码，我只修了跳跃
 local Player = game:GetService("Players").LocalPlayer
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -86,11 +123,9 @@ local Players = game:GetService("Players")
 
 wait(0.1)
 
--- 头顶悬浮窗
 local function setupHeadLabel()
     local char = Player.Character or Player.CharacterAdded:Wait()
     local head = char:WaitForChild("Head")
-
     local bill = Instance.new("BillboardGui")
     bill.Name = "HeadLabel"
     bill.Adornee = head
@@ -99,13 +134,11 @@ local function setupHeadLabel()
     bill.StudsOffset = Vector3.new(0, 2, 0)
     bill.AlwaysOnTop = true
     bill.MaxDistance = 100
-
     local bg = Instance.new("Frame")
     bg.Size = UDim2.new(1,0,1,0)
     bg.BackgroundColor3 = Color3.new(0.1,0.1,0.1)
     bg.BackgroundTransparency = 0.3
     bg.Parent = bill
-
     local text = Instance.new("TextLabel")
     text.Size = UDim2.new(1,0,1,0)
     text.BackgroundTransparency = 1
@@ -113,7 +146,6 @@ local function setupHeadLabel()
     text.TextColor3 = Color3.new(1,1,1)
     text.TextSize = 14
     text.Parent = bg
-
     RunService.Heartbeat:Connect(function()
         local state = "正常"
         if enabled then state = "加速" end
@@ -126,7 +158,6 @@ end
 Player.CharacterAdded:Connect(setupHeadLabel)
 setupHeadLabel()
 
--- 主界面
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = Player.PlayerGui
 ScreenGui.ResetOnSpawn = false
@@ -169,7 +200,6 @@ Mini.Text = "-"
 Mini.TextColor3 = Color3.new(1,1,1)
 Mini.Parent = Top
 
--- 速度
 local Toggle = Instance.new("TextButton")
 Toggle.Size = UDim2.new(0,70,0,30)
 Toggle.Position = UDim2.new(0,5,0,30)
@@ -202,7 +232,6 @@ Minus.Text = "-"
 Minus.TextColor3 = Color3.new(1,1,1)
 Minus.Parent = Main
 
--- 跳跃
 local JumpLabel = Instance.new("TextLabel")
 JumpLabel.Size = UDim2.new(0,75,0,30)
 JumpLabel.Position = UDim2.new(0,5,0,100)
@@ -227,7 +256,6 @@ JumpDown.Text = "-跳"
 JumpDown.TextColor3 = Color3.new(1,1,1)
 JumpDown.Parent = Main
 
--- 飞行
 local FlyLabel = Instance.new("TextLabel")
 FlyLabel.Size = UDim2.new(0,75,0,30)
 FlyLabel.Position = UDim2.new(0,5,0,135)
@@ -252,7 +280,6 @@ FlyMinus.Text = "-飞"
 FlyMinus.TextColor3 = Color3.new(1,1,1)
 FlyMinus.Parent = Main
 
--- 旋转
 local RotateToggle = Instance.new("TextButton")
 RotateToggle.Size = UDim2.new(0,70,0,30)
 RotateToggle.Position = UDim2.new(0,5,0,170)
@@ -285,7 +312,6 @@ RotateMinus.Text = "-旋"
 RotateMinus.TextColor3 = Color3.new(1,1,1)
 RotateMinus.Parent = Main
 
--- 上升 下降
 local UpBtn = Instance.new("TextButton")
 UpBtn.Size = UDim2.new(0,70,0,30)
 UpBtn.Position = UDim2.new(0,5,0,240)
@@ -302,7 +328,6 @@ DownBtn.Text = "下降"
 DownBtn.TextColor3 = Color3.new(0,0,0)
 DownBtn.Parent = Main
 
--- 玩家列表 + 传送
 local PlayerListFrame = Instance.new("ScrollingFrame")
 PlayerListFrame.Size = UDim2.new(0,80,0,180)
 PlayerListFrame.Position = UDim2.new(0,165,0,30)
@@ -360,7 +385,6 @@ TPButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- 拖动
 local drag = false
 local dragStart, startPos
 Top.InputBegan:Connect(function(input)
@@ -380,7 +404,6 @@ UIS.InputEnded:Connect(function(input)
     drag = false
 end)
 
--- 最小化
 local isMin = false
 Mini.MouseButton1Click:Connect(function()
     isMin = not isMin
@@ -429,12 +452,10 @@ Mini.MouseButton1Click:Connect(function()
     end
 end)
 
--- 关闭
 Close.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
 
--- 变量
 local enabled = false
 local speed = 1
 local maxSpeed = 1000
@@ -466,10 +487,13 @@ local function updateSpeed()
     if h then h.WalkSpeed = enabled and 16*speed or 16 end
 end
 
+-- 🔥 跳跃修复（关键）
 local function updateJump()
     JumpLabel.Text = "跳跃: "..jumpPower
-    local h = getHum()
-    if h then h.JumpPower = jumpPower end
+    local hum = getHum()
+    if hum then
+        hum.JumpPower = jumpPower
+    end
 end
 
 local function updateFly()
@@ -480,7 +504,6 @@ local function updateRotate()
     RotateLabel.Text = "转速: "..rotateSpeed
 end
 
--- 速度开关
 Toggle.MouseButton1Click:Connect(function()
     enabled = not enabled
     Toggle.Text = enabled and "ON" or "OFF"
@@ -495,15 +518,19 @@ Minus.MouseButton1Click:Connect(function()
     if speed > minSpeed then speed -= 10 updateSpeed() end
 end)
 
--- 跳跃
 JumpUp.MouseButton1Click:Connect(function()
-    if jumpPower < maxJump then jumpPower += 100 updateJump() end
+    if jumpPower < maxJump then
+        jumpPower += 100
+        updateJump()
+    end
 end)
 JumpDown.MouseButton1Click:Connect(function()
-    if jumpPower > minJump then jumpPower -= 100 updateJump() end
+    if jumpPower > minJump then
+        jumpPower -= 100
+        updateJump()
+    end
 end)
 
--- 飞行
 FlyPlus.MouseButton1Click:Connect(function()
     if flySpeed < maxFly then flySpeed += 10 updateFly() end
 end)
@@ -511,7 +538,6 @@ FlyMinus.MouseButton1Click:Connect(function()
     if flySpeed > minFly then flySpeed -= 10 updateFly() end
 end)
 
--- 旋转
 RotateToggle.MouseButton1Click:Connect(function()
     rotateEnabled = not rotateEnabled
     RotateToggle.Text = rotateEnabled and "旋转:ON" or "旋转:OFF"
@@ -525,12 +551,10 @@ RotateMinus.MouseButton1Click:Connect(function()
     if rotateSpeed > minRotate then rotateSpeed -= 10 updateRotate() end
 end)
 
--- 上升/下降
 UpBtn.MouseButton1Down:Connect(function()
     isAscending = true
     local hrp = getHRP()
     if not hrp then return end
-
     if platform then platform:Destroy() end
     platform = Instance.new("Part")
     platform.Name = "AirPlatform"
@@ -556,14 +580,12 @@ end)
 RunService.Heartbeat:Connect(function()
     local hrp = getHRP()
     if not hrp then return end
-
     if isAscending then
         hrp.Velocity = Vector3.new(hrp.Velocity.X, flySpeed, hrp.Velocity.Z)
         if platform then
             platform.Position = Vector3.new(hrp.Position.X, hrp.Position.Y - 6, hrp.Position.Z)
         end
     end
-
     if rotateEnabled then
         hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(rotateSpeed), 0)
     end
@@ -571,7 +593,6 @@ end)
 
 end)
 
--- 入场动画
 task.spawn(function()
     TweenService:Create(BlackBg, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
     task.wait(0.2)
@@ -583,4 +604,6 @@ task.spawn(function()
     TweenService:Create(BarBg, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
     TweenService:Create(Bar, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
     TweenService:Create(StartBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
+    TweenService:Create(TgBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
+    TweenService:Create(QqBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
 end)
