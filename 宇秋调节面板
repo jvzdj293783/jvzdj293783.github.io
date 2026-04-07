@@ -593,10 +593,10 @@ btn.MouseButton1Click:Connect(function()
     enabled = not enabled
 
     if enabled then
-        btn.Text = "互动 ON"
+        btn.Text = "秒互动 ON"
         btn.BackgroundColor3 = Color3.new(0, 0.7, 0.2)
     else
-        btn.Text = "互动 OFF"
+        btn.Text = "秒互动 OFF"
         btn.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 
         -- 关闭时还原所有长按时间
