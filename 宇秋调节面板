@@ -245,7 +245,7 @@ StartBtn.MouseButton1Click:Connect(function()
     FlyLabel.Size = UDim2.new(0, 70, 0, 30)
     FlyLabel.Position = UDim2.new(0, 10, 0, 110)
     FlyLabel.BackgroundColor3 = Color3.new(0.25,0.25,0.25)
-    FlyLabel.Text = "飞行: 80"
+    FlyLabel.Text = "上升: 80"
     FlyLabel.TextColor3 = Color3.new(1,1,1)
     FlyLabel.Parent = Main
 
@@ -253,14 +253,14 @@ StartBtn.MouseButton1Click:Connect(function()
     FlyPlus.Size = UDim2.new(0, 35, 0, 30)
     FlyPlus.Position = UDim2.new(0, 85, 0, 110)
     FlyPlus.BackgroundColor3 = Color3.new(0.2,0.6,0.2)
-    FlyPlus.Text = "+飞"
+    FlyPlus.Text = "+升"
     FlyPlus.Parent = Main
 
     local FlyMinus = Instance.new("TextButton")
     FlyMinus.Size = UDim2.new(0, 35, 0, 30)
     FlyMinus.Position = UDim2.new(0, 125, 0, 110)
     FlyMinus.BackgroundColor3 = Color3.new(0.2,0.2,0.6)
-    FlyMinus.Text = "-飞"
+    FlyMinus.Text = "-降”
     FlyMinus.Parent = Main
 
     local RotateToggle = Instance.new("TextButton")
