@@ -623,3 +623,83 @@ RunService.Heartbeat:Connect(function()
         end
     end
 end)
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local plr = Players.LocalPlayer
+local pg = plr.PlayerGui
+
+-- 界面
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = pg
+ScreenGui.ResetOnSpawn = false
+
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0, 80, 0, 26)
+btn.Position = UDim2.new(0, 140, 0, 50)
+btn.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
+btn.TextColor3 = Color3.new(1,1,1)
+btn.Text = "穿墙 OFF"
+btn.TextSize = 13
+btn.Parent = ScreenGui
+
+-- 穿墙开关
+local enabled = false
+
+-- 拖动
+local dragging = false
+local dragStart, startPos
+
+btn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = btn.Position
+    end
+end)
+
+UIS.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        btn.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- 点击开关
+btn.MouseButton1Click:Connect(function()
+    enabled = not enabled
+    btn.Text = enabled and "穿墙 ON" or "穿墙 OFF"
+    btn.BackgroundColor3 = enabled and Color3.new(0,0.7,0.2) or Color3.new(0.2,0.2,0.2)
+end)
+
+-- 穿墙核心
+RunService.Heartbeat:Connect(function()
+    local char = plr.Character
+    if not char then return end
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    local hum = char:FindFirstChild("Humanoid")
+    if not hrp or not hum then return end
+
+    if enabled then
+        hrp.CanCollide = false
+        for _,v in pairs(char:GetChildren()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+    else
+        -- 关闭恢复碰撞
+        hrp.CanCollide = true
+        for _,v in pairs(char:GetChildren()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = true
+            end
+        end
+    end
+end)
