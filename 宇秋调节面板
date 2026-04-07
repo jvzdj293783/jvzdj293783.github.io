@@ -1,3 +1,84 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local pg = Player.PlayerGui
+
+-- 启动界面（完美居中）
+local BootGui = Instance.new("ScreenGui")
+BootGui.Parent = pg
+BootGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+BootGui.ResetOnSpawn = false
+BootGui.IgnoreGuiInset = true
+
+local BlackBg = Instance.new("Frame")
+BlackBg.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+BlackBg.Size = UDim2.new(1, 0, 1, 0)
+BlackBg.Position = UDim2.new(0, 0, 0, 0)
+BlackBg.Parent = BootGui
+
+local MainPanel = Instance.new("Frame")
+MainPanel.BackgroundColor3 = Color3.fromRGB(22, 22, 30)
+MainPanel.Size = UDim2.new(0, 460, 0, 270)
+MainPanel.AnchorPoint = Vector2.new(0.5, 0.5)
+MainPanel.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainPanel.ClipsDescendants = true
+MainPanel.Parent = BootGui
+
+local TopLight = Instance.new("Frame")
+TopLight.BackgroundColor3 = Color3.fromRGB(0, 255, 140)
+TopLight.Size = UDim2.new(1, 0, 0, 5)
+TopLight.Position = UDim2.new(0, 0, 0, 0)
+TopLight.Parent = MainPanel
+
+local Title = Instance.new("TextLabel")
+Title.BackgroundTransparency = 1
+Title.Size = UDim2.new(1, 0, 0, 60)
+Title.Position = UDim2.new(0, 0, 0, 50)
+Title.Text = "宇  秋"
+Title.TextColor3 = Color3.fromRGB(0, 255, 140)
+Title.TextSize = 58
+Title.Font = Enum.Font.GothamBlack
+Title.Parent = MainPanel
+
+local SubTitle = Instance.new("TextLabel")
+SubTitle.BackgroundTransparency = 1
+SubTitle.Size = UDim2.new(1, 0, 0, 22)
+SubTitle.Position = UDim2.new(0, 0, 0, 115)
+SubTitle.Text = "YUQIU · 多功能辅助脚本"
+SubTitle.TextColor3 = Color3.fromRGB(160, 160, 180)
+SubTitle.TextSize = 18
+SubTitle.Parent = MainPanel
+
+local BarBg = Instance.new("Frame")
+BarBg.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+BarBg.Size = UDim2.new(0, 360, 0, 6)
+BarBg.Position = UDim2.new(0.5, -180, 0, 160)
+BarBg.Parent = MainPanel
+
+local Bar = Instance.new("Frame")
+Bar.BackgroundColor3 = Color3.fromRGB(0, 255, 140)
+Bar.Size = UDim2.new(0, 0, 1, 0)
+Bar.Position = UDim2.new(0, 0, 0, 0)
+Bar.Parent = BarBg
+
+local StartBtn = Instance.new("TextButton")
+StartBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 130)
+StartBtn.Size = UDim2.new(0, 240, 0, 54)
+StartBtn.Position = UDim2.new(0.5, -120, 0.5, 50)
+StartBtn.Text = "啟 動 腳 本"
+StartBtn.TextColor3 = Color3.new(1, 1, 1)
+StartBtn.TextSize = 22
+StartBtn.Font = Enum.Font.GothamBold
+StartBtn.Parent = MainPanel
+
+StartBtn.MouseButton1Click:Connect(function()
+    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 220, 0, 50)}):Play()
+    task.wait(0.12)
+    TweenService:Create(StartBtn, TweenInfo.new(0.12), {Size = UDim2.new(0, 240, 0, 54)}):Play()
+    TweenService:Create(Bar, TweenInfo.new(0.8), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+    task.wait(0.9)
+    BootGui:Destroy()
+
 local Player = game:GetService("Players").LocalPlayer
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -33,7 +114,6 @@ local function setupHeadLabel()
     text.TextSize = 14
     text.Parent = bg
 
-    -- 实时更新状态
     RunService.Heartbeat:Connect(function()
         local state = "正常"
         if enabled then state = "加速" end
@@ -53,7 +133,7 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 
 local Main = Instance.new("Frame")
-Main.Size = UDim2.new(0,250,0,275) -- 加宽面板放右边列表
+Main.Size = UDim2.new(0,250,0,275)
 Main.Position = UDim2.new(0.05,0,0.1,0)
 Main.BackgroundColor3 = Color3.new(0.12,0.12,0.12)
 Main.Parent = ScreenGui
@@ -222,10 +302,10 @@ DownBtn.Text = "下降"
 DownBtn.TextColor3 = Color3.new(0,0,0)
 DownBtn.Parent = Main
 
--- 玩家列表 + 传送（挪到右边了！）
+-- 玩家列表 + 传送
 local PlayerListFrame = Instance.new("ScrollingFrame")
 PlayerListFrame.Size = UDim2.new(0,80,0,180)
-PlayerListFrame.Position = UDim2.new(0,165,0,30) -- 右边空白位置
+PlayerListFrame.Position = UDim2.new(0,165,0,30)
 PlayerListFrame.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
 PlayerListFrame.BorderSizePixel = 0
 PlayerListFrame.CanvasSize = UDim2.new(0,0,5,0)
@@ -284,7 +364,7 @@ end)
 local drag = false
 local dragStart, startPos
 Top.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType.MouseButton1 then
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
         drag = true
         dragStart = input.Position
         startPos = Main.Position
@@ -487,4 +567,20 @@ RunService.Heartbeat:Connect(function()
     if rotateEnabled then
         hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(rotateSpeed), 0)
     end
+end)
+
+end)
+
+-- 入场动画
+task.spawn(function()
+    TweenService:Create(BlackBg, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
+    task.wait(0.2)
+    TweenService:Create(MainPanel, TweenInfo.new(0.8), {BackgroundTransparency=0}):Play()
+    TweenService:Create(TopLight, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
+    task.wait(0.3)
+    TweenService:Create(Title, TweenInfo.new(0.8), {TextTransparency=0}):Play()
+    TweenService:Create(SubTitle, TweenInfo.new(0.8), {TextTransparency=0}):Play()
+    TweenService:Create(BarBg, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
+    TweenService:Create(Bar, TweenInfo.new(0.7), {BackgroundTransparency=0}):Play()
+    TweenService:Create(StartBtn, TweenInfo.new(0.7), {BackgroundTransparency=0, TextTransparency=0}):Play()
 end)
