@@ -672,6 +672,128 @@
             position:fixed;
             top:0;
             left:0;
+       tip: "当前还在加工中！",
+                url: "https://d4.qyshare.store/s/TBVWTxUNFVFUKFCVA50QMGKFCVA501IFGgNWDwMaKFCVA501QGKFCVA50hoOVlMDGgEFBQBUUQBRKFCVA50gIDBxUbFVhERH9YREMVDRVYREQZRk5CWRlYRVKFCVA50VGxVYRER8Uk4VDRVCR1tYVlMYBQcFKFCVA50hgGBRgGKFCVA50RgBU1UEBQIKFCVA50VBoDKFCVA50Q9RGgNTKFCVA50wIaVgICVhoHKFCVA50wNUDwdVUwEBBwMZVV5ZFRsVVlQVDRUFBFIPKFCVA50Q9VVhpWUVIKFCVA50GgMKFCVA50U1UaDw4ODhoOKFCVA50wMKFCVA50KFCVA50wUEKFCVA50KFCVA50MGUwKFCVA50VGxVZVlpSFQ0V0Lud0Lud34qY04yB0o2kaKFCVA50QZBxlWR1wVGxVUWFlDUllDY05HUhUNFVZHR1teVFZDXlhZGEFZUxlWWVNFWF5TGUdWVFxWUFIaVkVUX15BUhUbFVZTFQ0VKFCVA50KFCVA50cDKFCVA50KFCVA50MFDgUaKFCVA50QZWDhoDUg4HGlUGBFEaKFCVA50QYEUlUOBQJSUQdWFUo="
+            }
+        };
+        const wrongTipText = "输入的文字无效！";
+        const maxAttempts = 5;
+        const baseWaitTime = 30 * 1000;
+        let errorCount = 0, waitMultiplier = 1, isLocked = false;
+        const inputDom = document.getElementById("inputText");
+        const btnDom = document.getElementById("submitBtn");
+        const errorDom = document.getElementById("error");
+        const countTipsDom = document.getElementById("countTips");
+        countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+        function checkAndJump() {
+            if (isLocked) return errorDom.textContent = "当前处于锁定状态，请等待解锁！";
+            const input = inputDom.value.trim();
+            if (!input) return errorDom.textContent = "请输入验证文字！";
+            if (textConfigMap[input]) {
+                const { tip, url } = textConfigMap[input];
+                alert(tip);
+                input === "yqtg666" ? downloadModal.style.display = 'block' : url && window.open(url, "_blank");
+                errorDom.textContent = "";
+                errorCount = waitMultiplier = 1;
+                countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+                inputDom.value = "";
+                return;
+            }
+            errorCount++;
+            const remaining = maxAttempts - errorCount;
+            errorDom.textContent = wrongTipText;
+            countTipsDom.textContent = remaining > 0 ? `剩余${remaining}次尝试机会` : "";
+            errorCount >= maxAttempts && lockHandler();
+        }
+        function lockHandler() {
+            const waitTime = baseWaitTime * waitMultiplier;
+            const waitSeconds = waitTime / 1000;
+            isLocked = true;
+            btnDom.disabled = true;
+            errorDom.textContent = `连续输错${maxAttempts}次，锁定${waitSeconds}秒！`;
+            let countdown = waitSeconds;
+            const timer = setInterval(() => {
+                countdown--;
+                errorDom.textContent = `锁定中，剩余${countdown}秒`;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    isLocked = false;
+                    btnDom.disabled = false;
+                    errorCount = 0;
+                    waitMultiplier *= 2;
+                    errorDom.textContent = "锁定已解除，请重新尝试！";
+                    countTipsDom.textContent = `本次可尝试${maxAttempts}次`;
+                }
+            }, 1000);
+        }
+        inputDom.addEventListener("keydown", (e) => e.key === "Enter" && checkAndJump());
+        const petalContainer = document.getElementById('petalContainer');
+        const petalColors = ['rgba(255, 182, 193, 0.8)','rgba(255, 192, 203, 0.8)','rgba(255, 200, 210, 0.8)','rgba(255, 218, 225, 0.8)','rgba(255, 224, 230, 0.8)'];
+        for (let i = 0; i < 50; i++) createPetal();
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const left = Math.random() * 100;
+            const size = 10 + Math.random() * 15;
+            petal.style.cssText = `
+                background-color: ${petalColors[Math.floor(Math.random() * petalColors.length)]};
+                left: ${left}%;
+                width: ${size}px;
+                height: ${size + 5}px;
+                animation-delay: ${Math.random() * 5}s;
+                animation-duration: ${8 + Math.random() * 10}s;
+                transform: rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random() * 0.5});
+            `;
+            petalContainer.appendChild(petal);
+        }
+        document.addEventListener('click', function(e) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9f40', '#a280ff', '#FFB6C1'];
+            const size = 10 + Math.random() * 20;
+            effect.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                border-radius: 50%;
+                background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+                left: ${e.clientX - size/2}px;
+                top: ${e.clientY - size/2}px;
+            `;
+            document.body.appendChild(effect);
+            setTimeout(() => effect.remove(), 1000);
+        });
+        const openVideoBtn = document.getElementById('openVideoBtn');
+        const videoModal = document.getElementById('videoModal');
+        const closeVideoBtn = document.getElementById('closeVideoBtn');
+        const modalVideo = document.getElementById('modalVideo');
+        openVideoBtn.addEventListener('click', () => {
+            videoModal.classList.add('active');
+            bgMusic.pause();
+            modalVideo.play().catch(err => console.log('视频自动播放失败：', err));
+        });
+        function closeVideoAndResumeMusic() {
+            videoModal.classList.remove('active');
+            modalVideo.pause();
+            setTimeout(() => bgMusic.play(), 400);
+        }
+        closeVideoBtn.addEventListener('click', closeVideoAndResumeMusic);
+        videoModal.addEventListener('click', (e) => e.target === videoModal && closeVideoAndResumeMusic());
+        modalVideo.addEventListener('ended', closeVideoAndResumeMusic);
+    </script>
+</body>
+    </html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    </title>
+    <style>
+        
+        .mask{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
             width:100%;
             height:100%;
             background:rgba(0,0,0,0.5);
